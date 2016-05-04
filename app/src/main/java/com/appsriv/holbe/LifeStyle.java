@@ -15,6 +15,44 @@ public class LifeStyle
     String Colour;
     private int int_compliance;
 
+    //profile screen
+    private int lifestyle_count;
+    private int lifestyle_completed;
+    private int lifestyle_late;
+    private int lifestyle_missed;
+
+    public int getLifestyle_count() {
+        return lifestyle_count;
+    }
+
+    public void setLifestyle_count(int lifestyle_count) {
+        this.lifestyle_count = lifestyle_count;
+    }
+
+    public int getLifestyle_completed() {
+        return lifestyle_completed;
+    }
+
+    public void setLifestyle_completed(int lifestyle_completed) {
+        this.lifestyle_completed = lifestyle_completed;
+    }
+
+    public int getLifestyle_late() {
+        return lifestyle_late;
+    }
+
+    public void setLifestyle_late(int lifestyle_late) {
+        this.lifestyle_late = lifestyle_late;
+    }
+
+    public int getLifestyle_missed() {
+        return lifestyle_missed;
+    }
+
+    public void setLifestyle_missed(int lifestyle_missed) {
+        this.lifestyle_missed = lifestyle_missed;
+    }
+
     public int getInt_compliance() {
         return int_compliance;
     }

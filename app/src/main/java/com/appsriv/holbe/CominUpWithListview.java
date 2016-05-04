@@ -11,11 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 public class CominUpWithListview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private CustomListAdapter adapter;
+    private ExpandListAdapterForComingUpListview comingUpListview;
     String items[];
     int flag[];
     int background[];
@@ -39,7 +40,8 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
             childPostion = bundle.getInt("childPosition");
         }
 
-        ListView listView =(ListView)findViewById(R.id.listview);
+        //ListView listView =(ListView)findViewById(R.id.listview);
+        ExpandableListView listview =(ExpandableListView) findViewById(R.id.exp_list);
         items=new String[]{"Supplement","Workout","Lifestyle","Food & Drink","Others"};
         time=new String[]{"1:30 PM","3:45 PM","5:15 PM","6:30 PM","8:00 PM"};
 
@@ -50,8 +52,9 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
         background = new int[] { R.drawable.circle_suppliments, R.drawable.circle_workout, R.drawable.circle_heart, R.drawable.circlefoodanddrink,
                 R.drawable.circle_others};
         typeExc= new String[]{"SITUPS","AVACADO SHAKE","VITAMIN C","VITAMIN A","VITAMIN D"};
-        adapter = new CustomListAdapter(CominUpWithListview.this, items,time,flag,typeExc,background,lineColour,SupplementFragment.list,groupPostion,childPostion);
-        listView.setAdapter(adapter);
+      //  adapter = new CustomListAdapter(CominUpWithListview.this, items,time,flag,typeExc,background,lineColour,SupplementFragment.list,groupPostion,childPostion);
+        comingUpListview = new ExpandListAdapterForComingUpListview(CominUpWithListview.this, items,time,flag,typeExc,background,lineColour,SupplementFragment.list,groupPostion,childPostion,listview);
+        listview.setAdapter(comingUpListview);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

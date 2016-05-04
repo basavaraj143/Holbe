@@ -15,6 +15,46 @@ public class Food
     String Colour;
     private int int_compliance;
 
+
+    //profile screen
+
+    private int food_count;
+    private int food_completed;
+    private int food_late;
+    private int food_missed;
+
+    public int getFood_count() {
+        return food_count;
+    }
+
+    public void setFood_count(int food_count) {
+        this.food_count = food_count;
+    }
+
+    public int getFood_completed() {
+        return food_completed;
+    }
+
+    public void setFood_completed(int food_completed) {
+        this.food_completed = food_completed;
+    }
+
+    public int getFood_late() {
+        return food_late;
+    }
+
+    public void setFood_late(int food_late) {
+        this.food_late = food_late;
+    }
+
+    public int getFood_missed() {
+        return food_missed;
+    }
+
+    public void setFood_missed(int food_missed) {
+        this.food_missed = food_missed;
+    }
+
     public int getInt_compliance() {
         return int_compliance;
     }

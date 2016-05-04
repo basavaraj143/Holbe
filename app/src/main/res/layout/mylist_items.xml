@@ -140,6 +140,7 @@
                     android:layout_gravity="center|start"
                     android:gravity="start"
                     android:paddingLeft="10dp"
+                    android:id="@+id/time1"
                     android:textColor="@color/light_gray"
                     android:layout_weight="10"
                     android:text="at 10:00 AM/6:00 PM"

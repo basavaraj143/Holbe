@@ -85,11 +85,41 @@ public class CustomListAdapter extends BaseAdapter {
         return 6;
     }
 */
-    @Override
+   @Override
     public int getCount()
     {
-        return list.size();
-       // return list.get(0).getItems().size() + list.get(0).getSup_Items().size() + list.get(0).getLife_Items().size() + list.get(0).getFood_Items().size() + list.get(0).getOther_Items().size();
+
+
+        return list.get(0).getItems().size() + list.get(0).getSup_Items().size() + list.get(0).getLife_Items().size() + list.get(0).getFood_Items().size() + list.get(0).getOther_Items().size();
+
+    }
+
+    public int getCount(int position)
+
+    {
+        int size=0;
+        if (position==0)
+        {
+            size = list.get(0).getItems().size();
+        }
+        else if (position==1)
+        {
+            size = list.get(1).getSup_Items().size();
+        }
+        else if (position==2)
+        {
+            size = list.get(2).getLife_Items().size();
+        }
+        else if (position==3)
+        {
+            size = list.get(3).getFood_Items().size();
+        }
+        else if (position==4)
+        {
+            size = list.get(3).getOther_Items().size();
+        }
+
+        return size;
     }
 
     @Override
@@ -128,6 +158,7 @@ public class CustomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        getCount(position);
 
         if (inflater == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -140,44 +171,11 @@ public class CustomListAdapter extends BaseAdapter {
         complete[position]=(ImageView)convertView.findViewById(R.id.complete);
         partial[position]=(ImageView)convertView.findViewById(R.id.partial);
 
-
         if (position<=list.size())
         {
-           /* if (position==0)
-            {
-                for (int i = 0 ; i<list.get(position).getItems().size(); i++) {*/
-                    name.setText(list.get(position).getItems().get(position).getWorkout_name());
-                    repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
-          /*      }
-            }*/
-           /* else if (position==1)
-            {
-                for (int i = 0 ; i<list.get(position).getSup_Items().size(); i++) {
-                    name.setText(list.get(position).getSup_Items().get(i).getSupplement_name());
-                  //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
-                }
-            }
-            else if (position ==2)
-            {
-                for (int i = 0 ; i<list.get(position).getLife_Items().size(); i++) {
-                    name.setText(list.get(position).getLife_Items().get(i).getLifestyle_name());
-                    //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
-                }
-            }
-            else if (position==3)
-            {
-                for (int i = 0 ; i<list.get(position).getFood_Items().size(); i++) {
-                    name.setText(list.get(position).getFood_Items().get(i).getFood_name());
-                    //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
-                }
-            }
-            if (position==4)
-            {
-                for (int i = 0 ; i<list.get(position).getOther_Items().size(); i++) {
-                    name.setText(list.get(position).getOther_Items().get(i).getOthers_name());
-                    //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
-                }
-            }*/
+            name.setText(list.get(position).getItems().get(position).getWorkout_name());
+            repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
+
         }
        // String s = list.get(0).getItems().get(0).getWorkout_name();
 
@@ -310,4 +308,43 @@ public class CustomListAdapter extends BaseAdapter {
         }
 
     }
+
+
+
+     /* if (position==0)
+            {
+                for (int i = 0 ; i<list.get(position).getItems().size(); i++) {*/
+
+              /*      }
+            }*/
+           /* else if (position==1)
+            {
+                for (int i = 0 ; i<list.get(position).getSup_Items().size(); i++) {
+                    name.setText(list.get(position).getSup_Items().get(i).getSupplement_name());
+                  //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
+                }
+            }
+            else if (position ==2)
+            {
+                for (int i = 0 ; i<list.get(position).getLife_Items().size(); i++) {
+                    name.setText(list.get(position).getLife_Items().get(i).getLifestyle_name());
+                    //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
+                }
+            }
+            else if (position==3)
+            {
+                for (int i = 0 ; i<list.get(position).getFood_Items().size(); i++) {
+                    name.setText(list.get(position).getFood_Items().get(i).getFood_name());
+                    //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
+                }
+            }
+            if (position==4)
+            {
+                for (int i = 0 ; i<list.get(position).getOther_Items().size(); i++) {
+                    name.setText(list.get(position).getOther_Items().get(i).getOthers_name());
+                    //  repsandsitups.setText(list.get(position).getItems().get(position).getReps() + " Reps " + "of " + list.get(position).getItems().get(position).getSets() + " Situps");
+                }
+            }*/
+
+
 }

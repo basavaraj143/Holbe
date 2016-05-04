@@ -47,13 +47,21 @@ public class Group {
     private ArrayList<LifeStyle> life_Items;
     private ArrayList<Food> food_Items;
     private ArrayList<Others> other_Items;
-
+    private ArrayList<Treatment> treatments;
 
     private int workout_compliance;
     private int supplement_compliance;
     private int lifestyle_compliance;
     private int food_compliance;
     private int others_compliance;
+
+    public ArrayList<Treatment> getTreatments() {
+        return treatments;
+    }
+
+    public void setTreatments(ArrayList<Treatment> treatments) {
+        this.treatments = treatments;
+    }
 
     public int getWorkout_compliance() {
         return workout_compliance;

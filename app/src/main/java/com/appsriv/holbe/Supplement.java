@@ -14,6 +14,45 @@ public class Supplement
     int ProgressBarRes;
     String Colour;
 
+//profile screen
+    private int supplement_count;
+    private int supplement_completed;
+    private int supplement_late;
+    private int supplement_missed;
+
+
+    public int getSupplement_count() {
+        return supplement_count;
+    }
+
+    public void setSupplement_count(int supplement_count) {
+        this.supplement_count = supplement_count;
+    }
+
+    public int getSupplement_completed() {
+        return supplement_completed;
+    }
+
+    public void setSupplement_completed(int supplement_completed) {
+        this.supplement_completed = supplement_completed;
+    }
+
+    public int getSupplement_late() {
+        return supplement_late;
+    }
+
+    public void setSupplement_late(int supplement_late) {
+        this.supplement_late = supplement_late;
+    }
+
+    public int getSupplement_missed() {
+        return supplement_missed;
+    }
+
+    public void setSupplement_missed(int supplement_missed) {
+        this.supplement_missed = supplement_missed;
+    }
+
     private int int_compliance;
 
     public int getInt_compliance() {

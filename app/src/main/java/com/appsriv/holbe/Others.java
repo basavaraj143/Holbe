@@ -13,6 +13,44 @@ public class Others
     String Colour;
     private int int_compliance;
 
+    //profile screen
+    private int others_count;
+    private int others_completed;
+    private int others_late;
+    private int others_missed;
+
+    public int getOthers_count() {
+        return others_count;
+    }
+
+    public void setOthers_count(int others_count) {
+        this.others_count = others_count;
+    }
+
+    public int getOthers_completed() {
+        return others_completed;
+    }
+
+    public void setOthers_completed(int others_completed) {
+        this.others_completed = others_completed;
+    }
+
+    public int getOthers_late() {
+        return others_late;
+    }
+
+    public void setOthers_late(int others_late) {
+        this.others_late = others_late;
+    }
+
+    public int getOthers_missed() {
+        return others_missed;
+    }
+
+    public void setOthers_missed(int others_missed) {
+        this.others_missed = others_missed;
+    }
+
     public int getInt_compliance() {
         return int_compliance;
     }

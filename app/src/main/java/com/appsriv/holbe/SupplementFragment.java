@@ -202,7 +202,7 @@ public class SupplementFragment extends Fragment
 					gru.setName(name[j]);
 					gru.setIcon(flag[j]);
 					gru.setPercentage("91");
-					//gru.setSectionName("section"+j);
+					gru.setSectionName("section"+j);
 
 					work_list = new ArrayList<Workout>();
 
