@@ -24,6 +24,7 @@ public class OverViewFragment extends Fragment
 {
 	private int[] background;
 	ExpandListAdapterForOverItems adapterForOverItems;
+	ExpandableListView listView;
 
 	ArrayList<Group> groups = new ArrayList<>();
 	@Override
@@ -31,13 +32,13 @@ public class OverViewFragment extends Fragment
 	{
 
 		View view = inflater.inflate(R.layout.overview_list, container, false);
-		ExpandableListView listView = (ExpandableListView)view.findViewById(R.id.exp_list);
+		listView = (ExpandableListView)view.findViewById(R.id.exp_list);
 		String url = "http://192.185.26.69/~holbe/api/patient/getoverview.php?id=1";
 		new AsyncHttpTask().execute(url);
-		background = new int[] { R.drawable.circle_suppliments, R.drawable.circle_workout, R.drawable.circle_heart, R.drawable.circlefoodanddrink,
+		/*background = new int[] { R.drawable.circle_suppliments, R.drawable.circle_workout, R.drawable.circle_heart, R.drawable.circlefoodanddrink,
 				R.drawable.circle_others};
 		adapterForOverItems = new ExpandListAdapterForOverItems(getActivity(),groups,listView,background);
-		listView.setAdapter(adapterForOverItems);
+		listView.setAdapter(adapterForOverItems);*/
 		return view;
 	}
 	public class AsyncHttpTask extends AsyncTask<String, Void, Integer>
@@ -117,6 +118,12 @@ public class OverViewFragment extends Fragment
 				{
 					progressDialog.dismiss();
 				}
+
+				background = new int[] { R.drawable.circle_suppliments, R.drawable.circle_workout, R.drawable.circle_heart, R.drawable.circlefoodanddrink,
+						R.drawable.circle_others};
+				adapterForOverItems = new ExpandListAdapterForOverItems(getActivity(),groups,listView,background);
+				listView.setAdapter(adapterForOverItems);
+
 			} else {
 
 				// Log.e(TAG, "Failed to fetch data!");
