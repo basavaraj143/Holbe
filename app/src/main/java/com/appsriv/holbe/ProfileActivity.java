@@ -11,6 +11,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,7 +44,18 @@ public class ProfileActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
        navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        TextView prof_name = (TextView)header.findViewById(R.id.name);
+        TextView city =(TextView)header.findViewById(R.id.city);
+        if (Login.details.size()!=0) {
+            prof_name.setText(Login.details.get("userFirstName"));
+            city.setText(Login.details.get("userCity"));
+        }
+        TextView name = (TextView)findViewById(R.id.name);
+        name.setText(Login.details.get("userFirstName"));
     }
 
     @Override
@@ -70,9 +83,9 @@ public class ProfileActivity extends AppCompatActivity
             startActivity(new Intent(ProfileActivity.this,ProfileActivity.class));
 
         } else if (id == R.id.nav_manage) {
-
+            startActivity(new Intent(ProfileActivity.this,SettingActivity.class));
         } else if (id == R.id.nav_share) {
-
+            startActivity(new Intent(ProfileActivity.this,SettingActivity.class));
         } else if (id == R.id.nav_send)
         {
             startActivity(new Intent(ProfileActivity.this,Splash.class));

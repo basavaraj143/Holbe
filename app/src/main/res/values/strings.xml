@@ -23,5 +23,6 @@
     <string name="title_activity_tab_profile">TabProfileActivity</string>
     <string name="title_activity_your_treatment">YourTreatment</string>
     <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="title_activity_setting">Setting</string>
 
 </resources>

@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context="com.dignitas.holbe.Splash">
+    tools:context="com.appsriv.holbe.Login">
 
+<!--
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,15 +17,38 @@
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         />
+-->
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/leaficon"
+        android:layout_marginTop="100dp"
+        android:id="@+id/leaf"
+        android:layout_marginLeft="45dp"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logoname"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/leaf"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginRight="45dp"
+        />
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="25dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="20dp"
         android:hint="Email Address"
-        android:layout_below="@+id/logo"
-        android:background="@android:color/transparent"
+        android:layout_below="@+id/leaf"
+        android:backgroundTint="@color/light_gray"
         android:textColorHint="#b3b5b5"
         android:textColor="#b3b5b5"
         android:padding="8dp"
@@ -33,15 +57,15 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="25dp"
-        android:background="@android:color/transparent"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="15dp"
         android:hint="Password"
         android:textColor="#b3b5b5"
         android:padding="8dp"
         android:inputType="textPassword"
         android:layout_below="@+id/email"
+        android:backgroundTint="@color/light_gray"
         android:textColorHint="#b3b5b5"
         android:id="@+id/password"
         />

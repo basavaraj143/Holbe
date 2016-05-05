@@ -69,7 +69,14 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
         lastweek = (ProgressBar)findViewById(R.id.lastweek);
         thisweek = (ProgressBar)findViewById(R.id.thisweek);
 
-
+        View header=navigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+       TextView prof_name = (TextView)header.findViewById(R.id.name);
+        TextView city =(TextView)header.findViewById(R.id.city);
+        if (Login.details.size()!=0) {
+            prof_name.setText(Login.details.get("userFirstName"));
+            city.setText(Login.details.get("userCity"));
+        }
 
         String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard.php?id=1";
         new AsyncHttpTask6().execute(url);
@@ -123,9 +130,9 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
             startActivity(new Intent(DrashBoardActivity.this,ProfileActivity.class));
 
         } else if (id == R.id.nav_manage) {
-
+            startActivity(new Intent(DrashBoardActivity.this,SettingActivity.class));
         } else if (id == R.id.nav_share) {
-
+            startActivity(new Intent(DrashBoardActivity.this,SettingActivity.class));
         } else if (id == R.id.nav_send)
         {
             startActivity(new Intent(DrashBoardActivity.this,Splash.class));

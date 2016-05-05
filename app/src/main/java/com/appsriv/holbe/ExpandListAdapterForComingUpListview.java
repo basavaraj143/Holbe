@@ -283,8 +283,40 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             @Override
             public void onClick(View v)
             {
-                final String url =  "http://192.185.26.69/~holbe/api/patient/update_compliance.php?completion=1&workout_id="+groups.get(groupPosition).getItems().get(childPosition).getWorkout_mapping_id();
-                new AsyncHttpTask().execute(url);
+
+
+
+                if (groupPosition==0)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getSup_Items().get(childPosition).getSupplement_mapping_id()+"&treatment=supplement";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==1)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getItems().get(childPosition).getWorkout_mapping_id()+"&treatment=workout";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==2)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getLife_Items().get(childPosition).getLifestyle_mapping_id()+"&treatment=lifestyle";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==3)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getFood_Items().get(childPosition).getFood_mapping_id()+"&treatment=food";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==4)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getOther_Items().get(childPosition).getOthers_mapping_id()+"&treatment=others";
+                    new AsyncHttpTask().execute(url);
+
+                }
+
             }
         });
 
@@ -292,8 +324,37 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             @Override
             public void onClick(View v)
             {
-                final String url =  "http://192.185.26.69/~holbe/api/patient/update_compliance.php?completion=0.5&workout_id="+groups.get(groupPosition).getItems().get(childPosition).getWorkout_mapping_id();;
-                new AsyncHttpTask().execute(url);
+                if (groupPosition==0)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getSup_Items().get(childPosition).getSupplement_mapping_id()+"&treatment=supplement";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==1)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getItems().get(childPosition).getWorkout_mapping_id()+"&treatment=workout";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==2)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getLife_Items().get(childPosition).getLifestyle_mapping_id()+"&treatment=lifestyle";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==3)
+                {
+                    // http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.1&id=1&treatment=workout
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getFood_Items().get(childPosition).getFood_mapping_id()+"&treatment=food";
+                    new AsyncHttpTask().execute(url);
+
+                }
+                else if (groupPosition==4)
+                {
+                    final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getOther_Items().get(childPosition).getOthers_mapping_id()+"&treatment=others";
+                    new AsyncHttpTask().execute(url);
+
+                }
 
             }
         });

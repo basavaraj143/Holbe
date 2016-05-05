@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 public class Login extends Activity implements OnTaskCompleted {
 
@@ -30,6 +31,7 @@ public class Login extends Activity implements OnTaskCompleted {
     EditText password;
     Config config;
     String emailId,pwd;
+    public static HashMap<String,String> details = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,6 +251,25 @@ public class Login extends Activity implements OnTaskCompleted {
             try {
                 JSONObject object = new JSONObject(result);
                  status = object.getString("status");
+                details = new HashMap<>();
+                String userId = object.getJSONObject("0").getString("user_id");
+                String userFirstName = object.getJSONObject("0").getString("user_first_name");
+                String userCity = object.getJSONObject("0").getString("user_city");
+                String userPhoneNo = object.getJSONObject("0").getString("user_phone_no");
+                String userAddress = object.getJSONObject("0").getString("user_address");
+                String userDob = object.getJSONObject("0").getString("user_dob");
+                String userEmailAddress = object.getJSONObject("0").getString("user_email_address");
+                String userLastName = object.getJSONObject("0").getString("user_last_name");
+                details.put("userId",userId);
+                details.put("userFirstName",userFirstName);
+                details.put("userCity",userCity);
+                details.put("userPhoneNo",userPhoneNo);
+                details.put("userAddress",userAddress);
+                details.put("userDob",userDob);
+                details.put("userEmailAddress",userEmailAddress);
+                details.put("userLastName",userLastName);
+
+
 
 
             } catch (JSONException e) {

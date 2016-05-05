@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/transparent_black"
+            android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
 
@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="10"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:weightSum="100">
@@ -32,9 +33,10 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:textColor="#fff"
+                    android:textColor="#000"
                     android:text="Profile"
                     android:textSize="20sp"
+
                     android:paddingLeft="10dp"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -43,7 +45,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:textColor="#fff"
+                    android:textColor="#000"
                     android:text="Edit"
                     android:textSize="20sp"
                     android:paddingLeft="10dp"

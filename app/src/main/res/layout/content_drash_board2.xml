@@ -87,7 +87,7 @@
                         android:layout_gravity="center"
                         android:gravity="center|top"
                         android:textColor="#fff"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:layout_weight="20"/>
 
 
@@ -131,7 +131,7 @@
                         android:layout_marginTop="-15dp"
                         android:layout_gravity="center"
                         android:gravity="center|top"
-                        android:textSize="20sp"
+                        android:textSize="17sp"
                         android:layout_weight="20"/>
 
 
@@ -210,6 +210,7 @@
                         android:text="OVERVIEW"
                         android:layout_gravity="start"
                         android:gravity="start"
+                        android:textSize="12sp"
                         android:layout_weight="5"/>
                 </LinearLayout>
 
@@ -676,6 +677,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="14"
+                    android:textSize="12sp"
                     android:layout_marginLeft="10dp"
                     android:text="COMPLIANCE"/>
 

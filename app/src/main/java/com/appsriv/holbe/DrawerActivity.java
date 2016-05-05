@@ -43,6 +43,7 @@ public class DrawerActivity extends AppCompatActivity
     private ExpandableListView ExpandList;
     ArrayList<Group> list;
     private int flag[];
+    public static TextView prof_name;
     String name[];
     String lineColour[];
     ArrayList<Workout> ch_list = null;
@@ -67,6 +68,15 @@ public class DrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header=navigationView.getHeaderView(0);
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        prof_name = (TextView)header.findViewById(R.id.name);
+        TextView city =(TextView)header.findViewById(R.id.city);
+        if (Login.details.size()!=0) {
+            prof_name.setText(Login.details.get("userFirstName"));
+            city.setText(Login.details.get("userCity"));
+        }
     }
 
     @Override
@@ -116,9 +126,13 @@ public class DrawerActivity extends AppCompatActivity
         {
             startActivity(new Intent(DrawerActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_manage)
+        {
+            startActivity(new Intent(DrawerActivity.this,SettingActivity.class));
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share)
+        {
+            startActivity(new Intent(DrawerActivity.this,SettingActivity.class));
 
         } else if (id == R.id.nav_send)
         {
@@ -192,6 +206,7 @@ public class DrawerActivity extends AppCompatActivity
         ImageView icon1 =(ImageView)layoutInflater1.findViewById(R.id.icon);
         icon1.setBackgroundResource(R.drawable.workouts);
         bottom1.setText("Workouts");
+        bottom1.setTextSize(11);
         top1.setText("6");
         top1.setBackgroundResource(R.drawable.workout_circle);
         layoutInflater1.setBackgroundColor(Color.parseColor("#3CC3AF"));
@@ -204,6 +219,7 @@ public class DrawerActivity extends AppCompatActivity
         icon2.setBackgroundResource(R.drawable.lifestyles);
         bottom2.setText("Lifestyles");
         top2.setText("4");
+        bottom2.setTextSize(11);
         top2.setBackgroundResource(R.drawable.lifestyle_circle);
         layoutInflater2.setBackgroundColor(Color.parseColor("#1AA2DF"));
         tabLayout.getTabAt(2).setCustomView(layoutInflater2);
@@ -214,6 +230,7 @@ public class DrawerActivity extends AppCompatActivity
         ImageView icon3 =(ImageView)layoutInflater3.findViewById(R.id.icon);
         icon3.setBackgroundResource(R.drawable.foodadndrink);
         bottom3.setText("Food & Drinks");
+        bottom3.setTextSize(11);
         top3.setText("3");
         top3.setBackgroundResource(R.drawable.foodanddrinks_circle);
         layoutInflater3.setBackgroundColor(Color.parseColor("#AA68B4"));
@@ -225,6 +242,7 @@ public class DrawerActivity extends AppCompatActivity
         ImageView icon4 =(ImageView)layoutInflater4.findViewById(R.id.icon);
         icon4.setBackgroundResource(R.drawable.foodadndrink);
         bottom4.setText("Others");
+        bottom4.setTextSize(11);
         top4.setText("1");
         top4.setBackgroundResource(R.drawable.circle);
         layoutInflater4.setBackgroundColor(Color.parseColor("#BD345E"));
