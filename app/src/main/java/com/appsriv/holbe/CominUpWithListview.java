@@ -11,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 public class CominUpWithListview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -68,6 +70,17 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+
+/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        TextView prof_name = (TextView)header.findViewById(R.id.name);
+        TextView city =(TextView)header.findViewById(R.id.city);
+        if (Login.details.size()!=0) {
+            prof_name.setText(Login.details.get("userFirstName"));
+            city.setText(Login.details.get("userCity"));
+        }
+        TextView name = (TextView)findViewById(R.id.name);
+        name.setText(Login.details.get("userFirstName"));
     }
 
     @Override
