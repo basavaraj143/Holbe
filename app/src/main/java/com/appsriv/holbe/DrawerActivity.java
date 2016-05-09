@@ -75,7 +75,7 @@ public class DrawerActivity extends AppCompatActivity
         TextView city =(TextView)header.findViewById(R.id.city);
         if (Login.details.size()!=0) {
             prof_name.setText(Login.details.get("userFirstName"));
-            city.setText(Login.details.get("userCity"));
+           // city.setText(Login.details.get("userCity"));
         }
     }
 

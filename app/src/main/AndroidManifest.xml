@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".StickyHeader.DemoActivity"
+            android:name=".Splash"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -62,7 +62,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DrawerActivity"
+            android:name=".StickyHeader.DemoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -75,7 +75,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".Splash"
+            android:name=".DrawerActivity"
             android:label="@string/title_activity_setting"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
