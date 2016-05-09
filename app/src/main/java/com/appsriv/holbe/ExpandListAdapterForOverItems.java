@@ -223,7 +223,7 @@ public class ExpandListAdapterForOverItems extends BaseExpandableListAdapter imp
             completd.setText(""+supplement.getSupplement_completed());
             late.setText(""+supplement.getSupplement_late());
             missed.setText(""+supplement.getSupplement_missed());
-            type.setText("SUPPLEMENTS");
+            type.setText("SUPPLEMENTS STATS");
             circle_progress_bar_back.setProgress(supplement.getSupplement_count());
 
         }
@@ -234,7 +234,7 @@ public class ExpandListAdapterForOverItems extends BaseExpandableListAdapter imp
             completd.setText(""+workout.getWorkout_completed());
             late.setText(""+workout.getWorkout_late());
             missed.setText(""+workout.getWorkout_missed());
-            type.setText("WORKOUT");
+            type.setText("WORKOUT STATS");
             circle_progress_bar_back.setProgress(workout.getWorkout_count());
         }
         if (groupPosition==3) {
@@ -242,7 +242,7 @@ public class ExpandListAdapterForOverItems extends BaseExpandableListAdapter imp
             completd.setText(""+style.getLifestyle_completed());
             late.setText(""+style.getLifestyle_late());
             missed.setText(""+style.getLifestyle_missed());
-            type.setText("LIFESTYLE");
+            type.setText("LIFESTYLE STATS");
             circle_progress_bar_back.setProgress(style.getLifestyle_count());
         }
         if (groupPosition==4)
@@ -251,7 +251,7 @@ public class ExpandListAdapterForOverItems extends BaseExpandableListAdapter imp
             completd.setText(""+food.getFood_completed());
             late.setText(""+food.getFood_late());
             missed.setText(""+food.getFood_missed());
-            type.setText("FOOD");
+            type.setText("FOOD STATS");
             circle_progress_bar_back.setProgress(food.getFood_count());
         }
         if (groupPosition==5)
@@ -260,7 +260,7 @@ public class ExpandListAdapterForOverItems extends BaseExpandableListAdapter imp
             completd.setText(""+others.getOthers_completed());
             late.setText(""+others.getOthers_late());
             missed.setText(""+others.getOthers_missed());
-            type.setText("OTHER");
+            type.setText("OTHER STATS");
             //circle_progress_bar_front.setBackgroundResource(others.getProgressBarRes());
            /// circle_progress_bar_front.setProgressDrawable(context.getResources().getDrawable(others.getProgressBarRes()));
             circle_progress_bar_back.setProgress(others.getOthers_count());

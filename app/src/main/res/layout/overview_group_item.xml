@@ -138,11 +138,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="COMPLETED"
+                    android:textSize="12sp"
                     android:layout_gravity="center"
                     android:gravity="center"/>
                 <Button
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:background="#bad65d"/>
 
@@ -166,12 +168,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="LATE"
+                    android:textSize="12sp"
                     android:layout_gravity="center"
                     android:gravity="center"/>
                 <Button
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:background="#98a9b8"/>
 
             </LinearLayout>
@@ -194,12 +198,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="MISSED"
+                    android:textSize="12sp"
                     android:layout_gravity="center"
                     android:gravity="center"/>
                 <Button
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:background="#37414a"/>
 
 

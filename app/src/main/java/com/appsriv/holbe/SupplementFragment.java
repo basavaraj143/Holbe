@@ -59,7 +59,8 @@ public class SupplementFragment extends Fragment
 
 		View view = inflater.inflate(R.layout.treatment_with_section, container, false);
 		//ExpandList = (ExpandableListView)view.findViewById(R.id.exp_list);
-		headerListView = (HeaderListView)view.findViewById(R.id.header_lis);
+		headerListView = (HeaderListView)view.findViewWithTag("header_list");
+		headerListView.setId(0);
 		overalll_compliance =(TextView)view.findViewById(R.id.overalll_compliance);
 		String url = "http://192.185.26.69/~holbe/api/patient/get_treatment.php?id=1";
 		new AsyncHttpTask().execute(url);
