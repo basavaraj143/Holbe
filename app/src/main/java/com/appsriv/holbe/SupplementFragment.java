@@ -1,7 +1,6 @@
 package com.appsriv.holbe;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -146,10 +145,10 @@ public class SupplementFragment extends Fragment
 				DrawerActivity.top2.setText(lifestyle_count);
 				DrawerActivity.top3.setText(food_count);
 				DrawerActivity.top4.setText(others_count);
-
 				overalll_compliance.setText(""+str_overalll_compliance+"%");
-				ExpAdapter= new ExpandListAdapterForItems(getActivity(),list,ExpandList,progressBarRes);
+				/*ExpAdapter= new ExpandListAdapterForItems(getActivity(),list,ExpandList,progressBarRes);
 				ExpandList.setAdapter(ExpAdapter);
+				ExpAdapter.notifyDataSetChanged();
 				ExpandList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 					@Override
 					public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
@@ -162,9 +161,11 @@ public class SupplementFragment extends Fragment
 						//startActivity(new Intent(getActivity(),CominUpWithListview.class));
 						return false;
 					}
-				});
-				progressDialog.dismiss();
-				ExpAdapter.notifyDataSetChanged();
+				});*/
+				if (progressDialog!=null&&progressDialog.isShowing()) {
+					progressDialog.dismiss();
+				}
+
 				// Toast.makeText(getApplicationContext(), "your search results", Toast.LENGTH_LONG).show();
 			}
 			else

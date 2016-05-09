@@ -309,23 +309,23 @@ public class ExpandListAdapterForItems extends BaseExpandableListAdapter impleme
         TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
         if (groupPosition==0)
         {
-            compliance_percentage.setText(""+group.getWorkout_compliance());
+            compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
         }
         else if (groupPosition==1)
         {
-            compliance_percentage.setText(""+group.getSupplement_compliance());
+            compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
         }
         else if (groupPosition==2)
         {
-            compliance_percentage.setText(""+group.getLifestyle_compliance());
+            compliance_percentage.setText(""+group.getLifestyle_compliance()+"%");
         }
         else if (groupPosition==3)
         {
-            compliance_percentage.setText(""+group.getFood_compliance());
+            compliance_percentage.setText(""+group.getFood_compliance()+"%");
         }
         else if (groupPosition==4)
         {
-            compliance_percentage.setText(""+group.getOthers_compliance());
+            compliance_percentage.setText(""+group.getOthers_compliance()+"%");
         }
 
         return convertView;
