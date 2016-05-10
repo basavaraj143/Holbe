@@ -4,16 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ForgotPassword extends Activity implements OnTaskCompleted {
 
@@ -79,23 +80,110 @@ public class ForgotPassword extends Activity implements OnTaskCompleted {
         }
         else
         {
-        pd = new ProgressDialog(ForgotPassword.this);
-        pd.setMessage("Contacting to server...");
-        pd.setCancelable(false);
-        pd.show();
+      //  pd = new ProgressDialog(ForgotPassword.this);
+       /// pd.setMessage("Contacting to server...");
+      //  pd.setCancelable(false);
+      //  pd.show();
 
-        HashMap<String, String> dat = new HashMap<String, String>();
-        JSONObject data=new JSONObject();
+    //    HashMap<String, String> dat = new HashMap<String, String>();
+      //  JSONObject data=new JSONObject();
 
-        try {
-            data.put("emailaddress", email.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+       // try {
+       //     data.put("emailaddress", email.getText().toString());
+      ///  } catch (JSONException e) {
+        //    e.printStackTrace();
+      //  }
+
+     /*   AsyncHttpGet asyncHttpGet = new AsyncHttpGet("login",this,dat);
+            asyncHttpGet.data=data;
+            asyncHttpGet.execute(config.forgot+"?emailaddress="+email.getText().toString());*/
+            final String url = " http://192.185.26.69/~holbe/api/patient/forgotpassword.php?user_email_address="+email.getText().toString();
+            new AsyncHttpTask().execute(url);
+    }
+    }
+
+
+    class AsyncHttpTask extends AsyncTask<String, Void, Integer>
+    {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(ForgotPassword.this, "Please wait!", "Loading...");
         }
 
-        AsyncHttpGet asyncHttpGet = new AsyncHttpGet("login",this,dat);
-            asyncHttpGet.data=data;
-            asyncHttpGet.execute(config.forgot+"?emailaddress="+email.getText().toString());
+        @Override
+        protected Integer doInBackground(String... params) {
+            //InputStream inputStream = null;
+            Integer result = 0;
+            HttpURLConnection urlConnection = null;
+
+            try {
+
+                URL url = new URL(params[0]);
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+
+                urlConnection.setRequestMethod("GET");
+
+                int statusCode = urlConnection.getResponseCode();
+
+
+                if (statusCode == 200)
+                {
+                    BufferedReader r = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                        result = 1; // Successful
+                    //result = 1; // Successful
+                } else
+                {
+                    result = 0; //"Failed to fetch data!";
+                }
+
+            } catch (Exception e)
+            {
+                // Log.d(TAG, e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+
+            return result; //"Failed to fetch data!";
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+
+            //setProgressBarIndeterminateVisibility(false);
+
+
+            if (progressDialog!=null&&progressDialog.isShowing())
+            {
+                progressDialog.dismiss();
+            }
+            if (result == 1)
+            {
+
+                Toast.makeText(ForgotPassword.this,"Password has sent Your Registered Email", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+
+            }
+
+        }
+
+        private String parseResult(String result)
+        {
+
+
+
+            return result;
+        }
     }
-    }
+
 }

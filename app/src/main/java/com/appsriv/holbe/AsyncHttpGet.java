@@ -79,6 +79,10 @@ public class AsyncHttpGet extends AsyncTask<String, String, String> {
 
     }
 
+
+
+
+
     /**
      * on getting result
      */

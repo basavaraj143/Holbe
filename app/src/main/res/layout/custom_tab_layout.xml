@@ -11,6 +11,7 @@
         android:textColor="@color/white"
         android:textSize="13sp"
         android:gravity="center"
+        android:layout_marginTop="7dp"
         android:paddingLeft="7dp"
         android:layout_marginLeft="10dp"
         android:paddingRight="5dp"

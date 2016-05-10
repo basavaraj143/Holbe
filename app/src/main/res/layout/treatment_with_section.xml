@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="100"
+        android:background="#eef2f6"
         android:orientation="vertical">
 
 
@@ -15,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
+            android:layout_margin="10dp"
             android:background="@drawable/my_shape"
             android:orientation="vertical"
             android:weightSum="100"
@@ -57,6 +59,7 @@
                     android:layout_gravity="center"
                     android:gravity="top|center"
                     android:text="52"
+                    android:layout_marginLeft="17dp"
                     android:id="@+id/overalll_compliance"
                     android:textSize="45sp"
 

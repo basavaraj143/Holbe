@@ -37,7 +37,8 @@ public class Tour extends Activity {
             public void onSwipeOutAtEnd()
             {
                 Log.e("swipe Out At End ", "swipe end");
-                if(check) {
+                if(check)
+                {
                     check=false;
                     finish();
                 }

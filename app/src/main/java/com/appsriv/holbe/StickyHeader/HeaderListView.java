@@ -22,8 +22,8 @@ public class HeaderListView extends RelativeLayout {
     // TODO: Handle listViews with fast scroll
     // TODO: See if there are methods to dispatch to mListView
 
-    private static final int FADE_DELAY    = 1000;
-    private static final int FADE_DURATION = 2000;
+    private static final int FADE_DELAY    = 2000;
+    private static final int FADE_DURATION = 3000;
 
     private InternalListView mListView;
     private SectionAdapter   mAdapter;
@@ -305,6 +305,7 @@ public class HeaderListView extends RelativeLayout {
     public void addHeaderView(View v) {
         mListView.addHeaderView(v);
     }
+
 
     private float dpToPx(float dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());

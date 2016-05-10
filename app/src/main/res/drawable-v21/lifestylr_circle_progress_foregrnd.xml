@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@android:id/progress">
             <shape
-                android:innerRadius="25dp"
+                android:innerRadius="22dp"
                 android:shape="ring"
                 android:thickness="3dp"
                 android:useLevel="true">

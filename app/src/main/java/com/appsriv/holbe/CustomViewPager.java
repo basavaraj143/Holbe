@@ -31,7 +31,8 @@ public class CustomViewPager extends ViewPager {
         this.direction = SwipeDirection.all;
     }
 
-    public enum SwipeDirection {
+    public enum SwipeDirection
+    {
         all, left, right, none;
     }
 
@@ -44,7 +45,8 @@ public class CustomViewPager extends ViewPager {
                     mStartDragX = x;
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    if (mStartDragX < x && getCurrentItem() == 0) {
+                    if (mStartDragX < x && getCurrentItem() == 0)
+                    {
                         mListener.onSwipeOutAtStart();
                     } else if (mStartDragX > x && getCurrentItem() == getAdapter().getCount() - 1) {
                         mListener.onSwipeOutAtEnd();
@@ -80,7 +82,8 @@ public class CustomViewPager extends ViewPager {
         return false;
     }
 
-    private boolean IsSwipeAllowed(MotionEvent event) {
+    private boolean IsSwipeAllowed(MotionEvent event)
+    {
         if (this.direction == SwipeDirection.all) return true;
 
         if (direction == SwipeDirection.none)//disable any swipe
@@ -91,7 +94,8 @@ public class CustomViewPager extends ViewPager {
             return true;
         }
 
-        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+        if (event.getAction() == MotionEvent.ACTION_MOVE)
+        {
             try {
                 float diffX = event.getX() - initialXValue;
                 if (diffX > 0 && direction == SwipeDirection.right) {

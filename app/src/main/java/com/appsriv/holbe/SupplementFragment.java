@@ -1,7 +1,6 @@
 package com.appsriv.holbe;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appsriv.holbe.StickyHeader.HeaderListView;
 import com.appsriv.holbe.StickyHeader.SectionAdapter;
@@ -150,8 +150,8 @@ public class SupplementFragment extends Fragment
                /* adapter6 = new MyRecyclerAdapter6(SearchActivity.this,feedItemList6);
                 HRecyclerView.setAdapter(adapter6);*/
 
-				DrawerActivity.top.setText(workout_count);
-				DrawerActivity.top1.setText(supplement_count);
+				DrawerActivity.top.setText(supplement_count);
+				DrawerActivity.top1.setText(workout_count);
 				DrawerActivity.top2.setText(lifestyle_count);
 				DrawerActivity.top3.setText(food_count);
 				DrawerActivity.top4.setText(others_count);
@@ -177,7 +177,6 @@ public class SupplementFragment extends Fragment
 				});*/
 
 
-				HeaderListView list = new HeaderListView(getActivity());
 
 				headerListView.setAdapter(new SectionAdapter()
 				{
@@ -227,6 +226,7 @@ public class SupplementFragment extends Fragment
 					public boolean hasSectionHeaderView(int section) {
 						return true;
 					}
+
 
 
 
@@ -371,6 +371,12 @@ public class SupplementFragment extends Fragment
 						return convertView;
 					}
 
+
+					@Override
+					protected int getSection(int position) {
+						return super.getSection(position);
+					}
+
 					@Override
 					public int getSectionHeaderViewTypeCount() {
 						return 2;
@@ -380,6 +386,17 @@ public class SupplementFragment extends Fragment
 					public int getSectionHeaderItemViewType(int section) {
 						return section % 2;
 					}
+
+					@Override
+					public Object getSectionHeaderItem(int section) {
+						return super.getSectionHeaderItem(section);
+					}
+
+					@Override
+					protected int getRowInSection(int position) {
+						return super.getRowInSection(position);
+					}
+
 
 					@Override
 					public View getSectionHeaderView(int section, View convertView, ViewGroup parent)
@@ -461,32 +478,56 @@ public class SupplementFragment extends Fragment
 						switch (section)
 						{
 							case 0:
-								convertView.setBackgroundColor(Color.parseColor("#ffffff"));
+								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
 								break;
 							case 1:
-								convertView.setBackgroundColor(Color.parseColor("#ffffff"));
+								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
 								break;
 							case 2:
-								convertView.setBackgroundColor(Color.parseColor("#ffffff"));
+								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
 								break;
 							case 3:
-								convertView.setBackgroundColor(Color.parseColor("#ffffff"));
+								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
 								break;
 							case 4:
-								convertView.setBackgroundColor(Color.parseColor("#ffffff"));
-								break;
+								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+
 						}
 						return convertView;
 					}
+
 
 					@Override
 					public void onRowItemClick(AdapterView<?> parent, View view, int section, int row, long id)
 					{
 						super.onRowItemClick(parent, view, section, row, id);
-						Intent intent = new Intent(getActivity(),CominUpWithListview.class);
+						/*Intent intent = new Intent(getActivity(),CominUpWithListview.class);
 						intent.putExtra("groupPosition",section);
 						intent.putExtra("childPosition",row);
-						startActivity(intent);
+						startActivity(intent);*/
+						//getSectionHeaderItem(4);
+						if (section==0)
+						{
+							headerListView.getListView().setSelection(0);
+						}
+						else if (section==1)
+						{
+							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1));
+						}
+						else if (section==2)
+						{
+							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1)+numberOfRows(2));
+						}
+						else if (section==3)
+						{
+							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1)+numberOfRows(2)+numberOfRows(3));
+						}
+						else if(section==4)
+						{
+							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1)+numberOfRows(2)+numberOfRows(3)+numberOfRows(4));
+						}
+
+						Toast.makeText(getActivity(),"button clicked ",Toast.LENGTH_SHORT).show();
 
 					}
 				});
@@ -544,7 +585,8 @@ public class SupplementFragment extends Fragment
 
 							//treatment count
 							JSONArray array = object.getJSONArray("treatment_count");
-							for (int k = 0; k < array.length(); k++) {
+							for (int k = 0; k < array.length(); k++)
+							{
 
 								workout_count = array.getJSONObject(k).getString("workout_count");
 								supplement_count = array.getJSONObject(k).getString("supplement_count");

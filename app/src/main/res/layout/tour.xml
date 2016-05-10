@@ -3,7 +3,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <com.dignitas.holbe.CustomViewPager
+    <com.appsriv.holbe.CustomViewPager
         android:id="@+id/viewPager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -56,11 +56,13 @@ public abstract class SectionAdapter extends BaseAdapter implements OnItemClickL
     /**
      * Dispatched to call onRowItemClick
      */
-    public final void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public final void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
         onRowItemClick(parent, view, getSection(position), getRowInSection(position), id);
     }
 
-    public void onRowItemClick(AdapterView<?> parent, View view, int section, int row, long id) {
+    public void onRowItemClick(AdapterView<?> parent, View view, int section, int row, long id)
+    {
 
     }
 
@@ -80,6 +82,10 @@ public abstract class SectionAdapter extends BaseAdapter implements OnItemClickL
     public boolean isEmpty() {
         return getCount() == 0;
     }
+
+
+
+
 
     @Override
     /**
