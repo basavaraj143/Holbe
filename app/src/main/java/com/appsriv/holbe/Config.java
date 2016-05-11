@@ -7,4 +7,10 @@ public class Config {
     public static String host="http://192.185.26.69/~holbe/";
     public static String login=host+"api/patient/login.php";
     public static String forgot=host+"api/patient/forgotpassword.php";
+
+
+    public static final String FILE_UPLOAD_URL = "http://192.185.26.69/~holbe/api/patient/uploadprofilepic.php";
+
+    // Directory name to store captured images and videos
+    public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
 }

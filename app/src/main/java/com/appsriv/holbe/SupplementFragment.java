@@ -1,6 +1,7 @@
 package com.appsriv.holbe;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appsriv.holbe.StickyHeader.HeaderListView;
 import com.appsriv.holbe.StickyHeader.SectionAdapter;
@@ -501,12 +501,12 @@ public class SupplementFragment extends Fragment
 					public void onRowItemClick(AdapterView<?> parent, View view, int section, int row, long id)
 					{
 						super.onRowItemClick(parent, view, section, row, id);
-						/*Intent intent = new Intent(getActivity(),CominUpWithListview.class);
+						Intent intent = new Intent(getActivity(),CominUpWithListview.class);
 						intent.putExtra("groupPosition",section);
 						intent.putExtra("childPosition",row);
-						startActivity(intent);*/
+						startActivity(intent);
 						//getSectionHeaderItem(4);
-						if (section==0)
+						/*if (section==0)
 						{
 							headerListView.getListView().setSelection(0);
 						}
@@ -528,7 +528,7 @@ public class SupplementFragment extends Fragment
 						}
 
 						Toast.makeText(getActivity(),"button clicked ",Toast.LENGTH_SHORT).show();
-
+*/
 					}
 				});
 				//getActivity().setContentView(list);

@@ -68,7 +68,6 @@
     </style>
 
 
-
     <style name="FadingActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/FadingActionBarWidget</item>
     </style>

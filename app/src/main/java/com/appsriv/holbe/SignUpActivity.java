@@ -4,32 +4,87 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class SignUpActivity extends Activity {
 
-    EditText email;
-    EditText password;
+    EditText email,password,first_name,last_name;
+    ImageView addPhoto;
     String emailId,pwd;
+    String filePathFromApi="";
+    String message;
+    // Camera activity request codes
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private Uri fileUri; // file url to store image/video
+
+    long totalSize = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        addPhoto = (ImageView)findViewById(R.id.logo);
+        addPhoto.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // capture picture
+                captureImage();
+            }
+        });
+        // Checking camera availability
+        if (!isDeviceSupportCamera()) {
+            Toast.makeText(getApplicationContext(), "Sorry! Your device doesn't support camera",
+                    Toast.LENGTH_LONG).show();
+            // will close the app if the device does't have camera
+            finish();
+        }
+
+
+
+
+
+
 
         TextView signin = (TextView)findViewById(R.id.signin);
         signin.setOnClickListener(new View.OnClickListener() {
@@ -41,10 +96,13 @@ public class SignUpActivity extends Activity {
 
         email=(EditText) findViewById(R.id.email);
         password=(EditText) findViewById(R.id.password);
+        first_name=(EditText) findViewById(R.id.first_name);
+        last_name=(EditText) findViewById(R.id.last_name);
         Button login =(Button)findViewById(R.id.signup);
 
         //Sign up button click
-        login.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
@@ -54,11 +112,19 @@ public class SignUpActivity extends Activity {
                 {
                     Toast.makeText(SignUpActivity.this,"Please Enter Valid Credentials ", Toast.LENGTH_LONG).show();
                 }
-                else if (!Splash.isValidEmaillId(emailId))
+                else if (first_name.getText().toString().isEmpty())
+                {
+                    Toast.makeText(SignUpActivity.this,"Please Enter First Name ", Toast.LENGTH_LONG).show();
+                }
+                else if (last_name.getText().toString().isEmpty())
+                {
+                    Toast.makeText(SignUpActivity.this,"Please Enter Last Name ", Toast.LENGTH_LONG).show();
+                }
+                else if (Splash.isValidEmaillId(emailId))
                 {
 
-                    final String URL=" http://192.185.26.69/~holbe/api/patient/createuser.php?user_email_address="+emailId+"&password="+pwd;
-                    new SignUp().execute(URL);
+
+                    new SignUpHttpTask().execute(email.getText().toString(),password.getText().toString(),first_name.getText().toString(),last_name.getText().toString(),filePathFromApi);
 
                 }
                 else
@@ -69,10 +135,296 @@ public class SignUpActivity extends Activity {
         });
 
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        // save file url in bundle as it will be null on screen orientation
+        // changes
+        outState.putParcelable("file_uri", fileUri);
+    }
 
-    class SignUp extends AsyncTask<String, Void, Integer>
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        // if the result is capturing Image
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                // successfully captured the image
+                // launching upload activity
+               // launchUploadActivity(true);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                // down sizing image as it throws OutOfMemory Exception for larger
+                // images
+                options.inSampleSize = 8;
+
+                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(), options);
+
+                addPhoto.setImageBitmap(bitmap);
+                new UploadFileToServer().execute();
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                // user cancelled Image capture
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled image capture", Toast.LENGTH_SHORT)
+                        .show();
+
+            } else {
+                // failed to capture image
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE)
+        {
+            if (resultCode == RESULT_OK) {
+
+                // video successfully recorded
+                // launching upload activity
+                launchUploadActivity(false);
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                // user cancelled recording
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled video recording", Toast.LENGTH_SHORT).show();
+
+            } else {
+                // failed to record video
+                Toast.makeText(getApplicationContext(), "Sorry! Failed to record video", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void launchUploadActivity(boolean isImage){
+        Intent i = new Intent(SignUpActivity.this, UploadActivity.class);
+        i.putExtra("filePath", fileUri.getPath());
+        i.putExtra("isImage", isImage);
+        startActivity(i);
+    }
+
+    private boolean isDeviceSupportCamera() {
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+    /**
+     * Launching camera app to capture image
+     */
+    private void captureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+        // start the image capture Intent
+        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+    }
+
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Config.IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists())
+        {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("hole", "Oops! Failed create " +Config.IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE)
+        {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else if (type == MEDIA_TYPE_VIDEO)
+        {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "VID_" + timeStamp + ".mp4");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+
+    /**
+     * Uploading the file to server
+     * */
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String>
+    {
+        ProgressDialog dialog;
+        @Override
+        protected void onPreExecute()
+        {
+            dialog = ProgressDialog.show(SignUpActivity.this,"","Uploading...");
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress)
+        {
+            // Making progress bar visible
+         //   progressBar.setVisibility(View.VISIBLE);
+
+            // updating progress bar value
+            dialog.setProgress(progress[0]);
+
+            // updating percentage value
+         //   txtPercentage.setText(String.valueOf(progress[0]) + "%");
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
+
+        @SuppressWarnings("deprecation")
+        private String uploadFile()
+        {
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+
+            try
+            {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(new AndroidMultiPartEntity.ProgressListener() {
+
+                    @Override
+                    public void transferred(long num) {
+                        publishProgress((int) ((num / (float) totalSize) * 100));
+                    }
+                });
+
+                File sourceFile = new File(fileUri.getPath());
+
+                // Adding file data to http body
+                entity.addPart("filename", new FileBody(sourceFile));
+
+                // Extra parameters if you want to pass to server
+                //entity.addPart("website", new StringBody("www.androidhive.info"));
+                //entity.addPart("email", new StringBody("abc@gmail.com"));
+
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200)
+                {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                    parseResult(responseString);
+                } else {
+                    responseString = "Error occurred! Http Status Code: " + statusCode;
+                }
+
+            } catch (ClientProtocolException e)
+            {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+
+            return responseString;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            Log.e("holbe", "Response from server: " + result);
+
+            if (dialog!=null&&dialog.isShowing())
+            {
+                dialog.dismiss();
+            }
+            // showing the server response in an alert dialog
+            showAlert(result);
+
+            super.onPostExecute(result);
+        }
+
+
+        private String parseResult(String result)
+        {
+            //{"file_name":"images.jpeg","message":"File uploaded successfully!","error":false,"file_path":"http://192.185.26.69/~holbe/api/patient/images/images.jpeg"}
+            String status=null;
+            try
+            {
+                JSONObject object = new JSONObject(result);
+                status = object.getString("status");
+                filePathFromApi= object.getString("file_path");
+                Log.i("Holbe","FILE_PATH "+filePathFromApi);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return status;
+        }
+    }
+
+
+    /**
+     * Method to show alert dialog
+     * */
+    private void showAlert(String message)
+    {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Response from Servers")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // do nothing
+                    }
+                });
+        android.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private class SignUpHttpTask extends AsyncTask<String, Void, String>
+    {
+        HttpURLConnection urlConnection;
+        StringBuilder sb = new StringBuilder();
+
         ProgressDialog progressDialog;
 
         @Override
@@ -82,131 +434,77 @@ public class SignUpActivity extends Activity {
         }
 
         @Override
-        protected Integer doInBackground(String... params) {
-            //InputStream inputStream = null;
-            Integer result = 0;
-            HttpURLConnection urlConnection = null;
+        protected String doInBackground(String... params)
+        {
 
-            try {
-
-                URL url = new URL(params[0]);
-
+            try
+            {
+                JSONObject object = new JSONObject();
+                object.put("user_email_address",params[0]);
+                object.put("password",params[1]);
+                object.put("first_name",params[2]);
+                object.put("last_name",params[3]);
+                object.put("profilepic",params[4]);
+                URL url = new URL(" http://192.185.26.69/~holbe/api/patient/createuser.php");
                 urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setUseCaches(false);
+                urlConnection.setConnectTimeout(10000);
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setRequestProperty("Content-Type","application/json");
+                //  urlConnection.setRequestProperty("Host", "android.schoolportal.gr");
+                urlConnection.connect();
+                OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
+                out.write(object.toString());
+                out.close();
 
-
-                urlConnection.setRequestMethod("GET");
-
-                int statusCode = urlConnection.getResponseCode();
-
-
-                if (statusCode == 200)
-                {
-                    BufferedReader r = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = r.readLine()) != null) {
-                        response.append(line);
+                int HttpResult =urlConnection.getResponseCode();
+                if(HttpResult ==HttpURLConnection.HTTP_OK){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            urlConnection.getInputStream(),"utf-8"));
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
                     }
+                    br.close();
+                    JSONObject mainObject = new JSONObject(sb.toString());
+                    message = mainObject.getString("message");
+                    return line;
 
-
-                    String status = parseResult(response.toString());
-                    if (status.equals("200"))
-                    {
-                        result = 1; // Successful
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-
-
-                    //result = 1; // Successful
-                } else
-                {
-                    result = 0; //"Failed to fetch data!";
                 }
+                else
+                {
+                    System.out.println(urlConnection.getResponseMessage());
+                }
+            } catch (MalformedURLException e) {
 
-            } catch (Exception e) {
-                // Log.d(TAG, e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+            catch (IOException e) {
+
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally{
+                if(urlConnection!=null)
+                    urlConnection.disconnect();
             }
 
-            return result; //"Failed to fetch data!";
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Integer result)
+        protected void onPostExecute(String s)
         {
-
-            //setProgressBarIndeterminateVisibility(false);
-
-
+            super.onPostExecute(s);
             if (progressDialog!=null&&progressDialog.isShowing())
             {
                 progressDialog.dismiss();
             }
-            if (result == 1)
-            {
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignUpActivity.this);
-
-                // Setting Dialog Title
-                alertDialog.setTitle("Alert");
-
-                // Setting Dialog Message
-                alertDialog.setMessage("You are logged in successfully please varify your mail");
-
-                // Setting Icon to Dialog
-                //alertDialog.setIcon(R.drawable.delete);
-
-                // Setting Positive "Yes" Button
-                alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        /*// Write your code here to invoke YES event
-                        Toast.makeText(getApplicationContext(), "You clicked on YES", Toast.LENGTH_SHORT).show();*/
-                        startActivity(new Intent(SignUpActivity.this, Splash.class));
-                    }
-                });
-
-                // Setting Negative "NO" Button
-                alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to invoke NO event
-                        //Toast.makeText(getApplicationContext(), "You clicked on NO", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignUpActivity.this, Splash.class));
-                        dialog.cancel();
-                    }
-                });
-
-                // Showing Alert Message
-                alertDialog.show();
-
-
-
-
-            }
-            else
-            {
-                Toast.makeText(SignUpActivity.this,"Please enter valid Email and Password", Toast.LENGTH_LONG).show();
-            }
-
-        }
-
-        private String parseResult(String result)
-        {
-            String status=null;
-            try {
-                JSONObject object = new JSONObject(result);
-                status = object.getString("status");
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return status;
+            Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_LONG).show();
         }
     }
+
 
 }

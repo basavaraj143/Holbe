@@ -24,5 +24,12 @@
     <string name="title_activity_your_treatment">YourTreatment</string>
     <string name="title_activity_drawer">DrawerActivity</string>
     <string name="title_activity_setting">Setting</string>
+    <string name="title_activity_image_upload">ImageUpload</string>
+
+
+    <string name="btnTakePicture">Capture Image</string>
+    <string name="btnRecordVideo">Record Video</string>
+    <string name="or">(or)</string>
+    <string name="btnUploadToServer">Upload to Server</string>
 
 </resources>

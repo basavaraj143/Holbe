@@ -3,7 +3,7 @@
     package="com.appsriv.holbe">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/leaficon"
@@ -72,13 +72,20 @@
         <activity
             android:name=".SettingActivity"
             android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ImageUpload"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DrawerActivity"
+            android:label="@string/title_activity_image_upload"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".DrawerActivity"
-            android:label="@string/title_activity_setting"
+            android:name=".UploadActivity"
+            android:label="@string/title_activity_image_upload"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
     </application>
 
 </manifest>

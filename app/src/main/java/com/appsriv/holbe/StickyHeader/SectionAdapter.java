@@ -22,7 +22,12 @@ public abstract class SectionAdapter extends BaseAdapter implements OnItemClickL
         return false;
     }
 
-    public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+    public View scrollTo(int section) {
+        return null;
+    }
+
+    public View getSectionHeaderView(int section, View convertView, ViewGroup parent)
+    {
         return null;
     }
 

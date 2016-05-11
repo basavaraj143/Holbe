@@ -10,6 +10,7 @@
         android:layout_height="100dp"
         android:src="@drawable/addphoto"
         android:id="@+id/logo"
+        android:scaleType="fitXY"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="45dp"
