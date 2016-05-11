@@ -392,10 +392,8 @@ public class SignUpActivity extends Activity {
             try
             {
                 JSONObject object = new JSONObject(result);
-                status = object.getString("status");
                 filePathFromApi= object.getString("file_path");
-                Log.i("Holbe","FILE_PATH "+filePathFromApi);
-
+               // Log.i("Holbe","FILE_PATH "+filePathFromApi);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
