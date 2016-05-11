@@ -58,8 +58,9 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="top|center"
-                    android:text="52"
-                    android:layout_marginLeft="17dp"
+                    android:text="52%"
+                    android:layout_marginLeft="40dp"
+                    android:paddingLeft="5dp"
                     android:id="@+id/overalll_compliance"
                     android:textSize="45sp"
 

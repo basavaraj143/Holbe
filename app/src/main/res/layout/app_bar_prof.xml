@@ -48,6 +48,7 @@
                     android:textColor="#000"
                     android:text="Edit"
                     android:textSize="20sp"
+                    android:id="@+id/edit"
                     android:paddingLeft="10dp"
                     android:layout_gravity="center"
                     android:gravity="center"

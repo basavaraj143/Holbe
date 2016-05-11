@@ -371,6 +371,8 @@ public class SignUpActivity extends Activity {
         @Override
         protected void onPostExecute(String result)
         {
+            super.onPostExecute(result);
+
             Log.e("holbe", "Response from server: " + result);
 
             if (dialog!=null&&dialog.isShowing())
@@ -378,9 +380,8 @@ public class SignUpActivity extends Activity {
                 dialog.dismiss();
             }
             // showing the server response in an alert dialog
-            showAlert(result);
+            //showAlert(result);
 
-            super.onPostExecute(result);
         }
 
 
@@ -503,6 +504,7 @@ public class SignUpActivity extends Activity {
                 progressDialog.dismiss();
             }
             Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(SignUpActivity.this,Login.class));
         }
     }
 

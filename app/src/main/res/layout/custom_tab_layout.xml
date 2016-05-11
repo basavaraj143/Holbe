@@ -11,9 +11,10 @@
         android:textColor="@color/white"
         android:textSize="13sp"
         android:gravity="center"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="10dp"
         android:paddingLeft="7dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="18dp"
+
         android:paddingRight="5dp"
         android:background="@drawable/circle"
         android:layout_gravity="center"
@@ -22,6 +23,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/icon"
+        android:layout_marginTop="-7dp"
         android:layout_gravity="center"
         android:background="@drawable/workouts"/>
     <TextView

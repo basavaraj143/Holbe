@@ -30,6 +30,13 @@ public class ProfileActivity extends AppCompatActivity
         setContentView(R.layout.activit_prof);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        TextView edit = (TextView)toolbar.findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this,SettingActivity.class));
+            }
+        });
 
        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance

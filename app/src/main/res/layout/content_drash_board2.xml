@@ -193,7 +193,7 @@
                 android:weightSum="100"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="-15dp"
+                android:layout_marginTop="-30dp"
                 android:background="@drawable/my_shape"
                 android:orientation="vertical"
                 android:layout_weight="30">
@@ -675,7 +675,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/my_shape"
                 android:orientation="vertical"
-                android:layout_weight="25">
+                android:layout_weight="27">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -791,7 +791,7 @@
                         <ImageView
                             android:background="@drawable/arrowupgrn"
                             android:layout_gravity="center"
-                            android:layout_height="35dp"
+                            android:layout_height="30dp"
                             android:layout_width="30dp"
                             android:layout_marginBottom="20dp"
                             android:id="@+id/arrowup"/>
