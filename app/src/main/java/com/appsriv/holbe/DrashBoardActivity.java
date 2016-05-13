@@ -13,8 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +37,7 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
     int str_overalll_compliance, str_treatment_compliance, str_days_left, str_work_compliance, str_life_compliance,str_sup_compliance,
     str_food_compliance, str_other_compliance, str_this_week_compliance, str_last_week_compliance;
     ProgressBar supplement1, workout,lifestyle ,foodanddrink ,others, lastweek ,thisweek;
-
+    Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -46,6 +51,16 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Dashboard screen")
+                .setAction(" Dashboard screen")
+                .setLabel("Dashboard screen")
+                .build());
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -72,10 +87,14 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
         View header=navigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
        TextView prof_name = (TextView)header.findViewById(R.id.name);
+
         TextView city =(TextView)header.findViewById(R.id.city);
+        ImageView prof_pic = (ImageView)header.findViewById(R.id.prof_pic);
         if (Login.details.size()!=0) {
             prof_name.setText(Login.details.get("userFirstName"));
             city.setText(Login.details.get("userCity"));
+           // Picasso.with(DrashBoardActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
+            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
         }
 
         String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard.php?id=1";
@@ -92,6 +111,20 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
         }
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mTracker.setScreenName("Dashboard Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mTracker.setScreenName("Dashboard Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -117,23 +150,23 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
+        if (id == R.id.overview)
         {
             startActivity(new Intent(DrashBoardActivity.this,DrashBoardActivity.class));
 
-        } else if (id == R.id.nav_gallery)
+        } else if (id == R.id.mytreatment)
         {
             startActivity(new Intent(DrashBoardActivity.this,DrawerActivity.class));
 
-        } else if (id == R.id.nav_slideshow)
+        } else if (id == R.id.profile)
         {
             startActivity(new Intent(DrashBoardActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.setting)
+        {
             startActivity(new Intent(DrashBoardActivity.this,SettingActivity.class));
-        } else if (id == R.id.nav_share) {
-            startActivity(new Intent(DrashBoardActivity.this,SettingActivity.class));
-        } else if (id == R.id.nav_send)
+
+        } else if (id == R.id.logout)
         {
             startActivity(new Intent(DrashBoardActivity.this,Splash.class));
         }

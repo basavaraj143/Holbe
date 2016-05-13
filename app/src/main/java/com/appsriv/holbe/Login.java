@@ -260,6 +260,7 @@ public class Login extends Activity implements OnTaskCompleted {
                 String userDob = object.getJSONObject("0").getString("user_dob");
                 String userEmailAddress = object.getJSONObject("0").getString("user_email_address");
                 String userLastName = object.getJSONObject("0").getString("user_last_name");
+                String user_profile_picture = object.getJSONObject("0").getString("user_profile_picture");
                 details.put("userId",userId);
                 details.put("userFirstName",userFirstName);
                 details.put("userCity",userCity);
@@ -268,6 +269,7 @@ public class Login extends Activity implements OnTaskCompleted {
                 details.put("userDob",userDob);
                 details.put("userEmailAddress",userEmailAddress);
                 details.put("userLastName",userLastName);
+                details.put("user_profile_picture",user_profile_picture);
 
 
 

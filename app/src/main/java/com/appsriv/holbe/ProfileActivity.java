@@ -12,7 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 public class ProfileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity
 
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
+    Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -43,6 +49,20 @@ public class ProfileActivity extends AppCompatActivity
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }*/
 
+        GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Profile screen")
+                .setAction(" Profile screen")
+                .setLabel("Profile screen")
+                .build());
+
+
+        ImageView prof_picture = (ImageView)findViewById(R.id.prof_picture);
+        //Picasso.with(ProfileActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_picture);
+        UrlImageViewHelper.setUrlDrawable(prof_picture,Login.details.get("user_profile_picture"));
        // overridePendingTransition(R.anim.scale_from_corner, R.anim.scale_to_corner);
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
@@ -58,15 +78,33 @@ public class ProfileActivity extends AppCompatActivity
         View header=navigationView.getHeaderView(0);
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
         TextView prof_name = (TextView)header.findViewById(R.id.name);
+        ImageView prof_pic = (ImageView)header.findViewById(R.id.prof_pic);
         TextView city =(TextView)header.findViewById(R.id.city);
         if (Login.details.size()!=0) {
             prof_name.setText(Login.details.get("userFirstName"));
             city.setText(Login.details.get("userCity"));
+          //  Picasso.with(ProfileActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
+            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
         }
         TextView name = (TextView)findViewById(R.id.name);
         name.setText(Login.details.get("userFirstName"));
     }
 
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mTracker.setScreenName("Profile Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mTracker.setScreenName("Profile Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
     @Override
     public void onBackPressed() {
        super.onBackPressed();
@@ -79,23 +117,23 @@ public class ProfileActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
+        if (id == R.id.overview)
         {
             startActivity(new Intent(ProfileActivity.this,DrashBoardActivity.class));
 
-        } else if (id == R.id.nav_gallery)
+        } else if (id == R.id.mytreatment)
         {
             startActivity(new Intent(ProfileActivity.this,DrawerActivity.class));
 
-        } else if (id == R.id.nav_slideshow)
+        } else if (id == R.id.profile)
         {
             startActivity(new Intent(ProfileActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.setting)
+        {
             startActivity(new Intent(ProfileActivity.this,SettingActivity.class));
-        } else if (id == R.id.nav_share) {
-            startActivity(new Intent(ProfileActivity.this,SettingActivity.class));
-        } else if (id == R.id.nav_send)
+
+        } else if (id == R.id.logout)
         {
             startActivity(new Intent(ProfileActivity.this,Splash.class));
         }

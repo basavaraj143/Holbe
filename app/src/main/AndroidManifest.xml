@@ -5,8 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
+        android:name=".GoogleAnalyticsApplication"
         android:allowBackup="true"
-        android:icon="@drawable/leaficon"
+        android:icon="@mipmap/appicon"
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity

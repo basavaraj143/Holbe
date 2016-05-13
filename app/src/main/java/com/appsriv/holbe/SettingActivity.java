@@ -18,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +38,7 @@ public class SettingActivity extends AppCompatActivity
     EditText fname,lname,phone,email,dob,address;
     String message;
     ImageView prof_pic;
+    Tracker mTracker;
     private static final int CAMERA_REQUEST = 1888;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,19 @@ public class SettingActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+
+        GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Setting screen")
+                .setAction(" Setting screen")
+                .setLabel("Setting screen")
+                .build());
+
+
         TextView save = (TextView)toolbar.findViewById(R.id.save);
         fname =(EditText)findViewById(R.id.fname);
         lname =(EditText)findViewById(R.id.lname);
@@ -53,7 +71,8 @@ public class SettingActivity extends AppCompatActivity
         email =(EditText)findViewById(R.id.email);
         dob =(EditText)findViewById(R.id.dob);
         address =(EditText)findViewById(R.id.address);
-
+        prof_pic = (ImageView)findViewById(R.id.prof_picture);
+        UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
         if (Login.details.size()!=0)
         {
             /*details.put("userId",userId);
@@ -71,12 +90,12 @@ public class SettingActivity extends AppCompatActivity
             email.setText(Login.details.get("userEmailAddress"));
             dob.setText(Login.details.get("userDob"));
             address.setText(Login.details.get("userAddress"));
-
         }
 
         ImageView camera = (ImageView)findViewById(R.id.camera);
-        prof_pic = (ImageView)findViewById(R.id.prof_pic);
-        camera.setOnClickListener(new View.OnClickListener() {
+       // prof_pic = (ImageView)findViewById(R.id.prof_pic);
+        camera.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -84,7 +103,8 @@ public class SettingActivity extends AppCompatActivity
             }
         });
 
-        save.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
@@ -122,13 +142,7 @@ public class SettingActivity extends AppCompatActivity
                     String DOB = dob.getText().toString();
                     String add = address.getText().toString();
 
-        /*
-    fname
-    lname
-    phone
-    address
-    id
-        */
+
                     new SettingTask().execute(firstName,lastName,phoneNum,add,Login.details.get("userId"));
 
 
@@ -140,6 +154,32 @@ public class SettingActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        TextView prof_name = (TextView)header.findViewById(R.id.name);
+        ImageView prof_pic = (ImageView)header.findViewById(R.id.prof_pic);
+        TextView city =(TextView)header.findViewById(R.id.city);
+        if (Login.details.size()!=0) {
+            prof_name.setText(Login.details.get("userFirstName"));
+            //Picasso.with(DrawerActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
+            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
+            // city.setText(Login.details.get("userCity"));
+        }
+    }
+
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mTracker.setScreenName("Setting Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mTracker.setScreenName("Setting Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -178,33 +218,26 @@ public class SettingActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
+        if (id == R.id.overview)
         {
             startActivity(new Intent(SettingActivity.this,DrashBoardActivity.class));
 
-        } else if (id == R.id.nav_gallery)
+        } else if (id == R.id.mytreatment)
         {
             startActivity(new Intent(SettingActivity.this,DrawerActivity.class));
 
-        }
-        else if (id == R.id.nav_slideshow)
+        } else if (id == R.id.profile)
         {
             startActivity(new Intent(SettingActivity.this,ProfileActivity.class));
 
-        }
-        else if (id == R.id.nav_manage)
+        } else if (id == R.id.setting)
         {
             startActivity(new Intent(SettingActivity.this,SettingActivity.class));
-        }
-        else if (id == R.id.nav_share)
-        {
-            startActivity(new Intent(SettingActivity.this,SettingActivity.class));
-        }
-        else if (id == R.id.nav_send)
+
+        } else if (id == R.id.logout)
         {
             startActivity(new Intent(SettingActivity.this,Splash.class));
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -213,6 +246,7 @@ public class SettingActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
+           // prof_pic = (ImageView)findViewById(R.id.prof_picture);
             prof_pic.setImageBitmap(photo);
         }
     }

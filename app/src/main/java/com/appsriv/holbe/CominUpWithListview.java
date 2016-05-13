@@ -13,7 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 public class CominUpWithListview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -26,7 +31,7 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
     String[] time;
     String[] typeExc;
     int childPostion, groupPostion;
-
+    Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +46,17 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
             groupPostion = bundle.getInt("groupPosition");
             childPostion = bundle.getInt("childPosition");
         }
+
+        GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Comingup screen")
+                .setAction(" Comingup screen")
+                .setLabel("Comingup screen")
+                .build());
+
 
         //ListView listView =(ListView)findViewById(R.id.listview);
         ExpandableListView listview =(ExpandableListView) findViewById(R.id.exp_list);
@@ -80,10 +96,29 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
            // prof_name.setText(Login.details.get("userFirstName"));
            // city.setText(Login.details.get("userCity"));
             TextView name = (TextView)header.findViewById(R.id.name);
+            ImageView prof_pic = (ImageView)header.findViewById(R.id.prof_pic);
+            //Picasso.with(CominUpWithListview.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
+            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
             name.setText(Login.details.get("userFirstName"));
         }
 
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mTracker.setScreenName("Coming Up Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mTracker.setScreenName("Coming Up Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -120,27 +155,26 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
+        if (id == R.id.overview)
         {
             startActivity(new Intent(CominUpWithListview.this,DrashBoardActivity.class));
 
-        } else if (id == R.id.nav_gallery)
+        } else if (id == R.id.mytreatment)
         {
             startActivity(new Intent(CominUpWithListview.this,DrawerActivity.class));
 
-        } else if (id == R.id.nav_slideshow)
+        } else if (id == R.id.profile)
         {
             startActivity(new Intent(CominUpWithListview.this,ProfileActivity.class));
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.setting)
+        {
+            startActivity(new Intent(CominUpWithListview.this,SettingActivity.class));
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send)
+        } else if (id == R.id.logout)
         {
             startActivity(new Intent(CominUpWithListview.this,Splash.class));
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

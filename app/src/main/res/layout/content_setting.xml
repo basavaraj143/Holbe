@@ -32,8 +32,8 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center"
-                    android:id="@+id/prof_pic"
-                    android:background="@drawable/ladyimage"/>
+                    android:id="@+id/prof_picture"
+                    />
 
 
                 <ImageView

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg">
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/leaficon"
@@ -23,6 +23,17 @@
         android:layout_centerHorizontal="true"
 
         android:layout_marginRight="45dp"
+        />-->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:id="@+id/logo"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
         />
     <EditText
         android:layout_width="match_parent"
@@ -30,7 +41,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"
         android:hint="Email Address"
-        android:layout_below="@+id/leaf"
+        android:layout_below="@+id/logo"
         android:background="@android:color/transparent"
         android:textColorHint="#b3b5b5"
         android:textColor="#b3b5b5"

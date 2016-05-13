@@ -6,7 +6,7 @@
     android:background="@drawable/bg"
     tools:context="com.appsriv.holbe.Login">
 
-<!--
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,9 +17,9 @@
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         />
--->
 
-    <ImageView
+
+   <!-- <ImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/leaficon"
@@ -38,7 +38,7 @@
 
         android:layout_marginRight="45dp"
         />
-
+-->
 
     <EditText
         android:layout_width="match_parent"
@@ -47,9 +47,11 @@
         android:layout_marginLeft="45dp"
         android:layout_marginTop="20dp"
         android:hint="Email Address"
-        android:layout_below="@+id/leaf"
+        android:layout_below="@+id/logo"
         android:backgroundTint="@color/light_gray"
         android:textColorHint="#b3b5b5"
+        android:inputType="textEmailAddress"
+        android:singleLine="true"
         android:textColor="#b3b5b5"
         android:padding="8dp"
         android:id="@+id/email"

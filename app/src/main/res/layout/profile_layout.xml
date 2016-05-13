@@ -95,8 +95,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="65"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/ladyimage"/>
+                        android:id="@+id/prof_picture"
+                        android:layout_margin="10dp"/>
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="0dp"

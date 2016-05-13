@@ -17,12 +17,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +52,7 @@ public class DrawerActivity extends AppCompatActivity
     ArrayList<Workout> ch_list = null;
     private ViewPager viewPager;
     public static TextView top,top1,top2,top3,top4;
+    Tracker mTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,18 +70,50 @@ public class DrawerActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
+        mTracker = application.getDefaultTracker();
+
+
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Treatment screen")
+                .setAction(" Treatment screen")
+                .setLabel("Treatment screen")
+                .build());
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header=navigationView.getHeaderView(0);
+
 /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
         prof_name = (TextView)header.findViewById(R.id.name);
+        ImageView prof_pic = (ImageView)header.findViewById(R.id.prof_pic);
         TextView city =(TextView)header.findViewById(R.id.city);
         if (Login.details.size()!=0) {
             prof_name.setText(Login.details.get("userFirstName"));
+            //Picasso.with(DrawerActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
+            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
            // city.setText(Login.details.get("userCity"));
         }
     }
+
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        mTracker.setScreenName("Treatment Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mTracker.setScreenName("Treatment Screen ");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -89,12 +125,6 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drawer, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,27 +144,23 @@ public class DrawerActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
+        if (id == R.id.overview)
         {
            startActivity(new Intent(DrawerActivity.this,DrashBoardActivity.class));
 
-        } else if (id == R.id.nav_gallery)
+        } else if (id == R.id.mytreatment)
         {
             startActivity(new Intent(DrawerActivity.this,DrawerActivity.class));
 
-        } else if (id == R.id.nav_slideshow)
+        } else if (id == R.id.profile)
         {
             startActivity(new Intent(DrawerActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.nav_manage)
+        } else if (id == R.id.setting)
         {
             startActivity(new Intent(DrawerActivity.this,SettingActivity.class));
 
-        } else if (id == R.id.nav_share)
-        {
-            startActivity(new Intent(DrawerActivity.this,SettingActivity.class));
-
-        } else if (id == R.id.nav_send)
+        } else if (id == R.id.logout)
         {
             startActivity(new Intent(DrawerActivity.this,Splash.class));
         }

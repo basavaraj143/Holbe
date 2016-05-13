@@ -194,11 +194,11 @@ public class SupplementFragment extends Fragment
 
 						int size = 0;
 
-						if (section == 0)
+						if (section == 1)
 						{
 							ArrayList<Workout> chList = SupplementFragment.list.get(section).getItems();
 							size = chList.size();
-						} else if (section == 1)
+						} else if (section == 0)
 						{
 							ArrayList<Supplement> chList = SupplementFragment.list.get(section).getSup_Items();
 							size = chList.size();
@@ -422,7 +422,8 @@ public class SupplementFragment extends Fragment
 							icon.setBackgroundResource(group.getIcon());
 							TextView type = (TextView)convertView.findViewById(R.id.type);
 							type.setText(group.getName());
-							type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+							//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+							type.setTextColor(Color.parseColor(lineColour[section]));
 							TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
 							if (section==0)
 							{
@@ -445,13 +446,15 @@ public class SupplementFragment extends Fragment
 								compliance_percentage.setText(""+group.getOthers_compliance()+"%");
 							}
 
-						} else
+						}
+						else
 						{
 							ImageView icon = (ImageView)convertView.findViewById(R.id.icon);
 							icon.setBackgroundResource(group.getIcon());
 							TextView type = (TextView)convertView.findViewById(R.id.type);
 							type.setText(group.getName());
-							type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+							//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+							type.setTextColor(Color.parseColor(lineColour[section]));
 							TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
 							if (section==0)
 							{
@@ -570,7 +573,8 @@ public class SupplementFragment extends Fragment
 			if (object.length()!=0)
 			{
 
-				for (int j = 0; j <5; j++) {
+				for (int j = 0; j <5; j++)
+				{
 					Group gru = new Group();
 					gru.setName(name[j]);
 					gru.setIcon(flag[j]);

@@ -55,6 +55,8 @@
         android:layout_below="@+id/last_name"
         android:textColorHint="#FFF"
         android:textColor="#FFF"
+        android:inputType="textEmailAddress"
+        android:singleLine="true"
         android:padding="15dp"
         android:id="@+id/email"
         android:backgroundTint="@color/white"
