@@ -73,7 +73,8 @@ public class SignUpActivity extends Activity {
             }
         });
         // Checking camera availability
-        if (!isDeviceSupportCamera()) {
+        if (!isDeviceSupportCamera())
+        {
             Toast.makeText(getApplicationContext(), "Sorry! Your device doesn't support camera",
                     Toast.LENGTH_LONG).show();
             // will close the app if the device does't have camera

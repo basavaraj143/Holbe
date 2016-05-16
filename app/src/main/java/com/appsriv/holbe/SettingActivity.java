@@ -1,18 +1,27 @@
 package com.appsriv.holbe;
 
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,24 +31,54 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class SettingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     EditText fname,lname,phone,email,dob,address;
-    String message;
+
     ImageView prof_pic;
     Tracker mTracker;
-    private static final int CAMERA_REQUEST = 1888;
+    private int year;
+    private int month;
+    private int day;
+    //private static final int CAMERA_REQUEST = 1888;
+
+    String filePathFromApi="";
+    String message;
+    // Camera activity request codes
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private Uri fileUri; // file url to store image/video
+
+    long totalSize = 0;
+    ImageView addPhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +90,10 @@ public class SettingActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
 
 
         GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
@@ -70,6 +113,26 @@ public class SettingActivity extends AppCompatActivity
         phone =(EditText)findViewById(R.id.phone);
         email =(EditText)findViewById(R.id.email);
         dob =(EditText)findViewById(R.id.dob);
+        dob.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DatePickerDialog dpd = new DatePickerDialog(SettingActivity.this,
+                        new DatePickerDialog.OnDateSetListener()
+                        {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth)
+                            {
+                                dob.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+
+                            }
+                        }, year, month, day);
+                dpd.show();
+            }
+        });
         address =(EditText)findViewById(R.id.address);
         prof_pic = (ImageView)findViewById(R.id.prof_picture);
         UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
@@ -92,17 +155,21 @@ public class SettingActivity extends AppCompatActivity
             address.setText(Login.details.get("userAddress"));
         }
 
-        ImageView camera = (ImageView)findViewById(R.id.camera);
+        addPhoto = (ImageView)findViewById(R.id.camera);
        // prof_pic = (ImageView)findViewById(R.id.prof_pic);
-        camera.setOnClickListener(new View.OnClickListener()
+       addPhoto.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               captureImage();
+           }
+       });
+        if (!isDeviceSupportCamera())
         {
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });
-
+            Toast.makeText(getApplicationContext(), "Sorry! Your device doesn't support camera",
+                    Toast.LENGTH_LONG).show();
+            // will close the app if the device does't have camera
+            finish();
+        }
         save.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -143,7 +210,7 @@ public class SettingActivity extends AppCompatActivity
                     String add = address.getText().toString();
 
 
-                    new SettingTask().execute(firstName,lastName,phoneNum,add,Login.details.get("userId"));
+                    new SettingTask().execute(firstName,lastName,phoneNum,add,Login.details.get("userId"),filePathFromApi);
 
 
                 }
@@ -163,6 +230,271 @@ public class SettingActivity extends AppCompatActivity
             //Picasso.with(DrawerActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
             UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
             // city.setText(Login.details.get("userCity"));
+        }
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save file url in bundle as it will be null on screen orientation
+        // changes
+        outState.putParcelable("file_uri", fileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        // if the result is capturing Image
+        if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                // successfully captured the image
+                // launching upload activity
+                // launchUploadActivity(true);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                // down sizing image as it throws OutOfMemory Exception for larger
+                // images
+                options.inSampleSize = 8;
+
+                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(), options);
+
+                addPhoto.setImageBitmap(bitmap);
+                new UploadFileToServer().execute();
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                // user cancelled Image capture
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled image capture", Toast.LENGTH_SHORT)
+                        .show();
+
+            } else {
+                // failed to capture image
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+        } else if (requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE)
+        {
+            if (resultCode == RESULT_OK) {
+
+                // video successfully recorded
+                // launching upload activity
+                launchUploadActivity(false);
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+                // user cancelled recording
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled video recording", Toast.LENGTH_SHORT).show();
+
+            } else {
+                // failed to record video
+                Toast.makeText(getApplicationContext(), "Sorry! Failed to record video", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void launchUploadActivity(boolean isImage){
+        Intent i = new Intent(SettingActivity.this, UploadActivity.class);
+        i.putExtra("filePath", fileUri.getPath());
+        i.putExtra("isImage", isImage);
+        startActivity(i);
+    }
+
+    private boolean isDeviceSupportCamera() {
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+    /**
+     * Launching camera app to capture image
+     */
+    private void captureImage() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+        // start the image capture Intent
+        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+    }
+
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Config.IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists())
+        {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("hole", "Oops! Failed create " +Config.IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE)
+        {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else if (type == MEDIA_TYPE_VIDEO)
+        {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "VID_" + timeStamp + ".mp4");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+
+    /**
+     * Uploading the file to server
+     * */
+    private class UploadFileToServer extends AsyncTask<Void, Integer, String>
+    {
+        ProgressDialog dialog;
+        @Override
+        protected void onPreExecute()
+        {
+            dialog = ProgressDialog.show(SettingActivity.this,"","Uploading...");
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress)
+        {
+            // Making progress bar visible
+            //   progressBar.setVisibility(View.VISIBLE);
+
+            // updating progress bar value
+            dialog.setProgress(progress[0]);
+
+            // updating percentage value
+            //   txtPercentage.setText(String.valueOf(progress[0]) + "%");
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return uploadFile();
+        }
+
+        @SuppressWarnings("deprecation")
+        private String uploadFile()
+        {
+            String responseString = null;
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+
+            try
+            {
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(new AndroidMultiPartEntity.ProgressListener() {
+
+                    @Override
+                    public void transferred(long num) {
+                        publishProgress((int) ((num / (float) totalSize) * 100));
+                    }
+                });
+
+                File sourceFile = new File(fileUri.getPath());
+
+                // Adding file data to http body
+                entity.addPart("filename", new FileBody(sourceFile));
+
+                // Extra parameters if you want to pass to server
+                //entity.addPart("website", new StringBody("www.androidhive.info"));
+                //entity.addPart("email", new StringBody("abc@gmail.com"));
+
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200)
+                {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                    parseResult(responseString);
+                } else {
+                    responseString = "Error occurred! Http Status Code: " + statusCode;
+                }
+
+            } catch (ClientProtocolException e)
+            {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+
+            return responseString;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+
+            Log.e("holbe", "Response from server: " + result);
+
+            if (dialog!=null&&dialog.isShowing())
+            {
+                dialog.dismiss();
+            }
+            // showing the server response in an alert dialog
+            //showAlert(result);
+
+        }
+
+
+        private String parseResult(String result)
+        {
+            //{"file_name":"images.jpeg","message":"File uploaded successfully!","error":false,"file_path":"http://192.185.26.69/~holbe/api/patient/images/images.jpeg"}
+            String status=null;
+            try
+            {
+                JSONObject object = new JSONObject(result);
+                filePathFromApi= object.getString("file_path");
+                // Log.i("Holbe","FILE_PATH "+filePathFromApi);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return status;
         }
     }
 
@@ -243,13 +575,7 @@ public class SettingActivity extends AppCompatActivity
         return true;
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-           // prof_pic = (ImageView)findViewById(R.id.prof_picture);
-            prof_pic.setImageBitmap(photo);
-        }
-    }
+
 
     private class SettingTask extends AsyncTask<String, Void, String>
     {
@@ -275,6 +601,7 @@ public class SettingActivity extends AppCompatActivity
                 object.put("phone",params[2]);
                 object.put("address",params[3]);
                 object.put("id",params[4]);
+                object.put("pic",params[5]);
                 URL url = new URL("http://192.185.26.69/~holbe/api/patient/updateuserdetails.php");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
