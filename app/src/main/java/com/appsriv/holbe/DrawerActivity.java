@@ -70,7 +70,10 @@ public class DrawerActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
+      /*  String str[] ={"Basu","Basavaraj","BasavaraKing"};
+        ListView listView =(ListView)drawer.findViewById(R.id.list);
+        listView.setAdapter(new ArrayAdapter<String>(DrawerActivity.this,android.R.layout.simple_dropdown_item_1line,str));
+*/
         GoogleAnalyticsApplication application = (GoogleAnalyticsApplication) getApplicationContext();
         mTracker = application.getDefaultTracker();
 
