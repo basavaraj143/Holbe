@@ -1,6 +1,7 @@
 package com.appsriv.holbe;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -9,13 +10,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.Tracker;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class Main2Activity extends AppCompatActivity {
        // TextView textPrompt, textPrompt2;
         ListView drawerList;
        // TextView textSelection;
-
+    CustomListDrawer customListDrawer;
         private String[] dayOfWeek = {
                 "Sunday", "Monday", "Tuesday", "Wednesday",
                 "Thursday", "Friday", "Saturday"};
@@ -80,14 +81,15 @@ public class Main2Activity extends AppCompatActivity {
                     drawerLayout.openDrawer(drawerView);
                 }});
 
-            Button buttonCloseDrawer = (Button)findViewById(R.id.closedrawer);
+            /*Button buttonCloseDrawer = (Button)findViewById(R.id.closedrawer);
             buttonCloseDrawer.setOnClickListener(new View.OnClickListener(){
 
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View arg0)
+                {
                     drawerLayout.closeDrawers();
                 }});
-
+*/
             drawerLayout.setDrawerListener(myDrawerListener);
 
   /*
@@ -100,7 +102,9 @@ public class Main2Activity extends AppCompatActivity {
    * trigger the TextView("http://android-er.blogspot.com/")
    * to open the web.
    */
-            drawerView.setOnTouchListener(new View.OnTouchListener() {
+
+            drawerView.setOnTouchListener(new View.OnTouchListener()
+            {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -111,18 +115,55 @@ public class Main2Activity extends AppCompatActivity {
 
             //textSelection = (TextView)findViewById(R.id.selection);
             drawerList = (ListView)findViewById(R.id.drawerlist);
-            arrayAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1,
-                    dayOfWeek);
-            drawerList.setAdapter(arrayAdapter);
+            String names[]={"Overview","My Treatment","Profile","Coming Up","Settings","Logout"};
+            Integer[] img={R.drawable.overview,R.drawable.calendarblue,R.drawable.userblue,R.drawable.overview,R.drawable.settingsblue,R.drawable.logoff};
+            customListDrawer = new CustomListDrawer(Main2Activity.this,names,img,"#ABD14B");
 
-            drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            TextView prof_name = (TextView)findViewById(R.id.name);
+            TextView city =(TextView)findViewById(R.id.city);
+            ImageView prof_pic = (ImageView)findViewById(R.id.prof_pic);
+            if (Login.details.size()!=0)
+            {
+                prof_name.setText(Login.details.get("userFirstName"));
+                city.setText(Login.details.get("userCity"));
+                UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
+            }
 
+
+            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dayOfWeek);
+            drawerList.setAdapter(customListDrawer);
+
+            drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
                 @Override
-                public void onItemClick(AdapterView<?> parent,
-                                        View view, int position, long id) {
-                    String sel = (String)parent.getItemAtPosition(position);
-                   // textSelection.setText(sel);
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    if (position==0)
+                    {
+                        startActivity(new Intent(Main2Activity.this,DrashBoardActivity.class));
+
+                    } else if (position==1)
+                    {
+                        startActivity(new Intent(Main2Activity.this,DrawerActivity.class));
+
+                    } else if (position==2)
+                    {
+                        startActivity(new Intent(Main2Activity.this,ProfileActivity.class));
+
+                    }
+                    else if (position==3)
+                    {
+                        startActivity(new Intent(Main2Activity.this,CominUpWithListview.class));
+                    }
+
+                    else if (position==4)
+                    {
+                        startActivity(new Intent(Main2Activity.this,SettingActivity.class));
+
+                    } else if (position==5)
+                    {
+                        startActivity(new Intent(Main2Activity.this,Splash.class));
+                    }
                 }});
         }
 

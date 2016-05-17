@@ -149,7 +149,7 @@ public class DrawerActivity extends AppCompatActivity
 
         if (id == R.id.overview)
         {
-           startActivity(new Intent(DrawerActivity.this,DrashBoardActivity.class));
+           startActivity(new Intent(DrawerActivity.this,Main2Activity.class));
 
         } else if (id == R.id.mytreatment)
         {

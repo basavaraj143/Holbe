@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity
 
         if (id == R.id.overview)
         {
-            startActivity(new Intent(ProfileActivity.this,DrashBoardActivity.class));
+            startActivity(new Intent(ProfileActivity.this,Main2Activity.class));
 
         } else if (id == R.id.mytreatment)
         {

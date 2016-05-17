@@ -157,7 +157,7 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
 
         if (id == R.id.overview)
         {
-            startActivity(new Intent(CominUpWithListview.this,DrashBoardActivity.class));
+            startActivity(new Intent(CominUpWithListview.this,Main2Activity.class));
 
         } else if (id == R.id.mytreatment)
         {

@@ -311,7 +311,7 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
             }
             else
             {
-                //showAlertDialog(BeerScreen.this, "Alert", "No Data Found Please Try other place", false);
+
 
             }
 
