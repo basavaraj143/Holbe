@@ -36,13 +36,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -267,7 +268,7 @@ public class SettingActivity extends AppCompatActivity
 
                 final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(), options);
 
-                addPhoto.setImageBitmap(bitmap);
+                prof_pic.setImageBitmap(bitmap);
                 new UploadFileToServer().execute();
 
 
@@ -428,15 +429,16 @@ public class SettingActivity extends AppCompatActivity
                     }
                 });
 
+
+                Bitmap bmp = BitmapFactory.decodeFile(fileUri.getPath());
+                Bitmap bitmap = getResizedBitmap(bmp,600);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+                byte[] imageBytes = baos.toByteArray();
                 File sourceFile = new File(fileUri.getPath());
 
                 // Adding file data to http body
-                entity.addPart("filename", new FileBody(sourceFile));
-
-                // Extra parameters if you want to pass to server
-                //entity.addPart("website", new StringBody("www.androidhive.info"));
-                //entity.addPart("email", new StringBody("abc@gmail.com"));
-
+                entity.addPart("filename", new ByteArrayBody(imageBytes,"image/jpeg",fileUri.getPath()));
                 totalSize = entity.getContentLength();
                 httppost.setEntity(entity);
 
@@ -464,7 +466,32 @@ public class SettingActivity extends AppCompatActivity
             return responseString;
 
         }
+        public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+            int width = image.getWidth();
+            int height = image.getHeight();
 
+            float bitmapRatio = (float)width / (float) height;
+            if (bitmapRatio > 0)
+            {
+                width = maxSize;
+                height = (int) (width / bitmapRatio);
+
+                if (height>600)
+                {
+                    height=600;
+                }
+
+            } else
+            {
+                height = maxSize;
+                width = (int) (height * bitmapRatio);
+                if (width>600)
+                {
+                    width=600;
+                }
+            }
+            return Bitmap.createScaledBitmap(image, width, height, true);
+        }
         @Override
         protected void onPostExecute(String result)
         {
@@ -562,7 +589,13 @@ public class SettingActivity extends AppCompatActivity
         {
             startActivity(new Intent(SettingActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.setting)
+        }
+        else if (id == R.id.comingup)
+        {
+            startActivity(new Intent(SettingActivity.this,CominUpWithListview.class));
+        }
+
+        else if (id == R.id.setting)
         {
             startActivity(new Intent(SettingActivity.this,SettingActivity.class));
 

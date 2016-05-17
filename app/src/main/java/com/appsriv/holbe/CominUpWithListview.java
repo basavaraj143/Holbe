@@ -167,7 +167,13 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
         {
             startActivity(new Intent(CominUpWithListview.this,ProfileActivity.class));
 
-        } else if (id == R.id.setting)
+        }
+        else if (id == R.id.comingup)
+        {
+            startActivity(new Intent(CominUpWithListview.this,CominUpWithListview.class));
+        }
+
+        else if (id == R.id.setting)
         {
             startActivity(new Intent(CominUpWithListview.this,SettingActivity.class));
 

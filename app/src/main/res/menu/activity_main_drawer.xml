@@ -8,12 +8,17 @@
             android:title="Overview" />
         <item
             android:id="@+id/mytreatment"
-            android:icon="@drawable/treatment"
+            android:icon="@drawable/calendarblue"
             android:title="My Treatments" />
         <item
             android:id="@+id/profile"
             android:icon="@drawable/userblue"
             android:title="Profile" />
+
+        <item
+            android:id="@+id/comingup"
+            android:title="Coming Up" />
+
     </group>
 
     <item android:title="">

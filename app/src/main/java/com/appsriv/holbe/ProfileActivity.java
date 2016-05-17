@@ -26,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
     Tracker mTracker;
+    boolean flag= true;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -64,6 +65,27 @@ public class ProfileActivity extends AppCompatActivity
         //Picasso.with(ProfileActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_picture);
         UrlImageViewHelper.setUrlDrawable(prof_picture,Login.details.get("user_profile_picture"));
        // overridePendingTransition(R.anim.scale_from_corner, R.anim.scale_to_corner);
+
+        final ImageView active = (ImageView)findViewById(R.id.active);
+
+        active.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if (flag)
+                {
+                    flag=false;
+                    active.setBackgroundResource(R.drawable.activebtn);
+                }
+                else
+                {
+                    flag=true;
+                    active.setBackgroundResource(R.drawable.inactivebutton);
+                }
+            }
+        });
+
+
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
@@ -129,7 +151,13 @@ public class ProfileActivity extends AppCompatActivity
         {
             startActivity(new Intent(ProfileActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.setting)
+        }
+        else if (id == R.id.comingup)
+        {
+            startActivity(new Intent(ProfileActivity.this,CominUpWithListview.class));
+        }
+
+        else if (id == R.id.setting)
         {
             startActivity(new Intent(ProfileActivity.this,SettingActivity.class));
 

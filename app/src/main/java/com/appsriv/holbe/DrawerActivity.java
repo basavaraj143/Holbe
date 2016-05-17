@@ -156,7 +156,13 @@ public class DrawerActivity extends AppCompatActivity
         {
             startActivity(new Intent(DrawerActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.setting)
+        }
+        else if (id == R.id.comingup)
+        {
+            startActivity(new Intent(DrawerActivity.this,CominUpWithListview.class));
+        }
+
+        else if (id == R.id.setting)
         {
             startActivity(new Intent(DrawerActivity.this,SettingActivity.class));
 

@@ -162,7 +162,12 @@ public class DrashBoardActivity extends AppCompatActivity implements NavigationV
         {
             startActivity(new Intent(DrashBoardActivity.this,ProfileActivity.class));
 
-        } else if (id == R.id.setting)
+        }
+        else if (id == R.id.comingup)
+        {
+            startActivity(new Intent(DrashBoardActivity.this,CominUpWithListview.class));
+        }
+        else if (id == R.id.setting)
         {
             startActivity(new Intent(DrashBoardActivity.this,SettingActivity.class));
 

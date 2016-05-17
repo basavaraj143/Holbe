@@ -12,6 +12,7 @@
     <ImageView
         android:id="@+id/prof_pic"
         android:layout_width="90dp"
+        android:scaleType="fitXY"
         android:layout_height="90dp"/>
 
     <TextView
