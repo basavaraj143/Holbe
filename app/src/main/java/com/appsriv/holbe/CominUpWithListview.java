@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 public class CominUpWithListview extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -98,7 +97,8 @@ public class CominUpWithListview extends AppCompatActivity implements Navigation
             TextView name = (TextView)header.findViewById(R.id.name);
             ImageView prof_pic = (ImageView)header.findViewById(R.id.prof_pic);
             //Picasso.with(CominUpWithListview.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
-            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
+            String  s = Login.details.get("user_profile_picture");
+            //UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
             name.setText(Login.details.get("userFirstName"));
         }
 

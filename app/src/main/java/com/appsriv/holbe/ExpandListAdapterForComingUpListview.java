@@ -232,6 +232,7 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
         partial[childPosition]=(ImageView)convertView.findViewById(R.id.partial);
 
 
+
         ImageView icon1 =(ImageView)convertView.findViewById(R.id.icon);
         View line=(View)convertView.findViewById(R.id.line);
         line.setBackgroundColor(Color.parseColor(lineColour[groupPosition]));
@@ -246,6 +247,16 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             name.setText(supplement.getSupplement_name());
             repsandsitups.setText(supplement.getRepitition());
             time2.setText(supplement.getWhen_time());
+            if (groups.get(groupPosition).getSup_Items().get(childPosition).getInt_compliance()==50)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
+            }
+            else if (groups.get(groupPosition).getSup_Items().get(childPosition).getInt_compliance()==100)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
 
         }
         else if (groupPosition==1)
@@ -254,12 +265,36 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             repsandsitups.setText(workout.getSets()+" of" + workout.getReps());
             time2.setText(workout.getWeight());
 
+            if (groups.get(groupPosition).getItems().get(childPosition).getInt_compliance()==50)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
+            }
+            else if (groups.get(groupPosition).getItems().get(childPosition).getInt_compliance()==100)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+
+
         }
         else if (groupPosition==2)
         {
             name.setText(style.getLifestyle_name());
             repsandsitups.setText(style.getRepitition());
             time2.setText(style.getWhen());
+
+            if (groups.get(groupPosition).getLife_Items().get(childPosition).getInt_compliance()==50)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
+            }
+            else if (groups.get(groupPosition).getLife_Items().get(childPosition).getInt_compliance()==100)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+
 
         }
         else if (groupPosition==3)
@@ -268,6 +303,18 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             repsandsitups.setText(food.getWhen());
             time2.setText(food.getWhen());
 
+            if (groups.get(groupPosition).getFood_Items().get(childPosition).getInt_compliance()==50)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
+            }
+            else if (groups.get(groupPosition).getFood_Items().get(childPosition).getInt_compliance()==100)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+
+
         }
         else if (groupPosition==4)
         {
@@ -275,8 +322,19 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             repsandsitups.setText(others.getDuration());
             time2.setText(others.getDuration());
 
-        }
 
+            if (groups.get(groupPosition).getOther_Items().get(childPosition).getInt_compliance()==50)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
+            }
+            else if (groups.get(groupPosition).getOther_Items().get(childPosition).getInt_compliance()==100)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+
+        }
 
         complete[childPosition].setOnClickListener(new View.OnClickListener()
         {
@@ -288,30 +346,40 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
 
                 if (groupPosition==0)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgray);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getSup_Items().get(childPosition).getSupplement_mapping_id()+"&treatment=supplement";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==1)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgray);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getItems().get(childPosition).getWorkout_mapping_id()+"&treatment=workout";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==2)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgray);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getLife_Items().get(childPosition).getLifestyle_mapping_id()+"&treatment=lifestyle";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==3)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgray);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getFood_Items().get(childPosition).getFood_mapping_id()+"&treatment=food";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==4)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgray);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=1&id="+groups.get(groupPosition).getOther_Items().get(childPosition).getOthers_mapping_id()+"&treatment=others";
                     new AsyncHttpTask().execute(url);
 
@@ -326,24 +394,32 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             {
                 if (groupPosition==0)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getSup_Items().get(childPosition).getSupplement_mapping_id()+"&treatment=supplement";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==1)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getItems().get(childPosition).getWorkout_mapping_id()+"&treatment=workout";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==2)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getLife_Items().get(childPosition).getLifestyle_mapping_id()+"&treatment=lifestyle";
                     new AsyncHttpTask().execute(url);
 
                 }
                 else if (groupPosition==3)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
                     // http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.1&id=1&treatment=workout
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getFood_Items().get(childPosition).getFood_mapping_id()+"&treatment=food";
                     new AsyncHttpTask().execute(url);
@@ -351,6 +427,8 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
                 }
                 else if (groupPosition==4)
                 {
+                    complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                    partial[childPosition].setBackgroundResource(R.drawable.partialgreen);
                     final String url =  "http://192.185.26.69/~holbe/api/patient/updatecompliance.php?completion=0.5&id="+groups.get(groupPosition).getOther_Items().get(childPosition).getOthers_mapping_id()+"&treatment=others";
                     new AsyncHttpTask().execute(url);
 
