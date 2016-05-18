@@ -5,13 +5,26 @@
     android:layout_height="match_parent"
     android:background="@drawable/signup_bg">
 
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:layout_marginTop="25dp"
+        android:textAlignment="center"
+        android:text="Sign Up"
+        />
+
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/addphoto"
         android:id="@+id/logo"
         android:scaleType="fitXY"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
@@ -100,8 +113,8 @@
         android:text="ALREADY A MEMBER?"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginLeft="45dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
         android:textSize="17sp"
         android:gravity="center_horizontal"
         android:textAlignment="center"

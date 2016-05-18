@@ -257,6 +257,11 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
                 complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
                 partial[childPosition].setBackgroundResource(R.drawable.partialgray);
             }
+            else if (groups.get(groupPosition).getSup_Items().get(childPosition).getInt_compliance()==0)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
 
         }
         else if (groupPosition==1)
@@ -275,7 +280,11 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
                 complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
                 partial[childPosition].setBackgroundResource(R.drawable.partialgray);
             }
-
+            else if (groups.get(groupPosition).getItems().get(childPosition).getInt_compliance()==0)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
 
         }
         else if (groupPosition==2)
@@ -292,6 +301,11 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             else if (groups.get(groupPosition).getLife_Items().get(childPosition).getInt_compliance()==100)
             {
                 complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+            else if (groups.get(groupPosition).getLife_Items().get(childPosition).getInt_compliance()==0)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
                 partial[childPosition].setBackgroundResource(R.drawable.partialgray);
             }
 
@@ -313,6 +327,12 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
                 complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
                 partial[childPosition].setBackgroundResource(R.drawable.partialgray);
             }
+            else if (groups.get(groupPosition).getFood_Items().get(childPosition).getInt_compliance()==0)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+
 
 
         }
@@ -331,6 +351,11 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
             else if (groups.get(groupPosition).getOther_Items().get(childPosition).getInt_compliance()==100)
             {
                 complete[childPosition].setBackgroundResource(R.drawable.completedbtn);
+                partial[childPosition].setBackgroundResource(R.drawable.partialgray);
+            }
+            else if (groups.get(groupPosition).getOther_Items().get(childPosition).getInt_compliance()==0)
+            {
+                complete[childPosition].setBackgroundResource(R.drawable.completedgrey);
                 partial[childPosition].setBackgroundResource(R.drawable.partialgray);
             }
 

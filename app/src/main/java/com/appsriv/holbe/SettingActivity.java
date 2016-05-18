@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,16 +15,17 @@ import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,18 +81,25 @@ public class SettingActivity extends AppCompatActivity
 
     long totalSize = 0;
     ImageView addPhoto;
+    DrawerLayout drawerLayout;
+    View drawerView;
+    // TextView textPrompt, textPrompt2;
+    ListView drawerList;
+    // TextView textSelection;
+    CustomListDrawer customListDrawer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting2);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        setContentView(R.layout.setting_drawer);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+           ////     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+      //  drawer.setDrawerListener(toggle);
+       //toggle.syncState();
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
@@ -107,8 +116,9 @@ public class SettingActivity extends AppCompatActivity
                 .setLabel("Setting screen")
                 .build());
 
-
-        TextView save = (TextView)toolbar.findViewById(R.id.save);
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerView = (View)findViewById(R.id.drawer);
+        TextView save = (TextView)findViewById(R.id.save);
         fname =(EditText)findViewById(R.id.fname);
         lname =(EditText)findViewById(R.id.lname);
         phone =(EditText)findViewById(R.id.phone);
@@ -220,7 +230,111 @@ public class SettingActivity extends AppCompatActivity
         });
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        ImageView buttonOpenDrawer = (ImageView)findViewById(R.id.id);
+        buttonOpenDrawer.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View arg0) {
+                drawerLayout.openDrawer(drawerView);
+            }});
+
+            /*Button buttonCloseDrawer = (Button)findViewById(R.id.closedrawer);
+            buttonCloseDrawer.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View arg0)
+                {
+                    drawerLayout.closeDrawers();
+                }});
+*/
+        drawerLayout.setDrawerListener(myDrawerListener);
+
+
+        drawerView.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                return true;
+            }
+        });
+
+        //textSelection = (TextView)findViewById(R.id.selection);
+        drawerList = (ListView)findViewById(R.id.drawerlist);
+        String names[]={"Overview","My Treatment","Profile","Coming Up","","","Settings","Logout"};
+        Integer[] img={R.drawable.overview,R.drawable.treatment,R.drawable.profile,R.drawable.comingupwhite,0,0,R.drawable.settting,R.drawable.logout};
+        customListDrawer = new CustomListDrawer(SettingActivity.this,names,img,"#ABD14B");
+
+        TextView prof_name = (TextView)findViewById(R.id.name);
+        TextView city =(TextView)findViewById(R.id.city);
+        ImageView prof_pic = (ImageView)findViewById(R.id.prof_pic);
+        if (Login.details.size()!=0)
+        {
+            prof_name.setText(Login.details.get("userFirstName"));
+            city.setText(Login.details.get("userCity"));
+            UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
+        }
+
+
+        //  arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dayOfWeek);
+        drawerList.setAdapter(customListDrawer);
+
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                TextView selected_item = (TextView) view.findViewById(R.id.selected_item);
+                ImageView icon = (ImageView) view.findViewById(R.id.icon);
+
+                if (position==0)
+                {
+                    selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                    icon.setBackgroundResource(R.drawable.overview);
+                    startActivity(new Intent(SettingActivity.this,Main2Activity.class));
+
+
+                } else if (position==1)
+                {
+                    selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                    icon.setBackgroundResource(R.drawable.calendarblue);
+                    startActivity(new Intent(SettingActivity.this,DrawerActivity.class));
+
+
+                } else if (position==2)
+                {
+                    icon.setBackgroundResource(R.drawable.userblue);
+                    selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                    startActivity(new Intent(SettingActivity.this,ProfileActivity.class));
+
+
+                }
+                else if (position==3)
+                {
+                    selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                    icon.setBackgroundResource(R.drawable.comingupblue);
+                    startActivity(new Intent(SettingActivity.this,CominUpWithListview.class));
+
+                }
+
+                else if (position==6)
+                {
+                    selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                    icon.setBackgroundResource(R.drawable.settingsblue);
+                    startActivity(new Intent(SettingActivity.this,SettingActivity.class));
+
+
+                } else if (position==7)
+                {
+                    selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                    icon.setBackgroundResource(R.drawable.logoff);
+                    startActivity(new Intent(SettingActivity.this,Splash.class));
+
+                }
+            }});
+
+        /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
         TextView prof_name = (TextView)header.findViewById(R.id.name);
@@ -231,8 +345,46 @@ public class SettingActivity extends AppCompatActivity
             //Picasso.with(DrawerActivity.this).load("http://192.185.26.69/~holbe/api/patient/images/IMG_20160512_160617.jpg").into(prof_pic);
             UrlImageViewHelper.setUrlDrawable(prof_pic,Login.details.get("user_profile_picture"));
             // city.setText(Login.details.get("userCity"));
-        }
+        }*/
     }
+
+    DrawerLayout.DrawerListener myDrawerListener = new DrawerLayout.DrawerListener(){
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            // textPrompt.setText("onDrawerClosed");
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            // textPrompt.setText("onDrawerOpened");
+        }
+
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+            // textPrompt.setText("onDrawerSlide: " + String.format("%.2f", slideOffset));
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+            String state;
+            switch(newState){
+                case DrawerLayout.STATE_IDLE:
+                    state = "STATE_IDLE";
+                    break;
+                case DrawerLayout.STATE_DRAGGING:
+                    state = "STATE_DRAGGING";
+                    break;
+                case DrawerLayout.STATE_SETTLING:
+                    state = "STATE_SETTLING";
+                    break;
+                default:
+                    state = "unknown!";
+            }
+
+            // textPrompt2.setText(state);
+        }
+    };
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

@@ -909,7 +909,6 @@
             android:scaleType="fitXY"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="16dp"
-            android:background="@drawable/ladyimage"
             android:layout_height="90dp"/>
 
         <TextView
@@ -936,7 +935,7 @@
             android:id="@+id/drawerlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#80000000" />
+            android:background="#535b68" />
 
     </LinearLayout>
 

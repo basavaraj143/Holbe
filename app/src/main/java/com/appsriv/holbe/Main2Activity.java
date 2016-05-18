@@ -69,6 +69,8 @@ public class Main2Activity extends AppCompatActivity {
             thisweek = (ProgressBar)findViewById(R.id.thisweek);
             String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard.php?id=1";
             new AsyncHttpTask6().execute(url);
+
+
             ImageView buttonOpenDrawer = (ImageView)findViewById(R.id.id);
             buttonOpenDrawer.setOnClickListener(new View.OnClickListener(){
 
