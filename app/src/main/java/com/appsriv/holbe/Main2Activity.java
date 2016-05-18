@@ -2,6 +2,7 @@ package com.appsriv.holbe;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -9,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -35,10 +35,6 @@ public class Main2Activity extends AppCompatActivity {
         ListView drawerList;
        // TextView textSelection;
     CustomListDrawer customListDrawer;
-        private String[] dayOfWeek = {
-                "Sunday", "Monday", "Tuesday", "Wednesday",
-                "Thursday", "Friday", "Saturday"};
-        ArrayAdapter<String> arrayAdapter;
 
     TextView overalll_compliance,treatment_compliance,days_left,sup_compliance,work_compliance,life_compliance, food_compliance,other_compliance,this_week_compliance,last_week_compliance;
     int str_overalll_compliance, str_treatment_compliance, str_days_left, str_work_compliance, str_life_compliance,str_sup_compliance,
@@ -94,7 +90,7 @@ public class Main2Activity extends AppCompatActivity {
 
   /*
    * In my trial experiment:
-   * Without dummy OnTouchListener for the drawView to
+   * Without drawer_item OnTouchListener for the drawView to
    * consume the onTouch event, touching/clicking on
    * un-handled view on drawView will pass to the view
    * under it!
@@ -115,8 +111,8 @@ public class Main2Activity extends AppCompatActivity {
 
             //textSelection = (TextView)findViewById(R.id.selection);
             drawerList = (ListView)findViewById(R.id.drawerlist);
-            String names[]={"Overview","My Treatment","Profile","Coming Up","Settings","Logout"};
-            Integer[] img={R.drawable.overview,R.drawable.calendarblue,R.drawable.userblue,R.drawable.overview,R.drawable.settingsblue,R.drawable.logoff};
+            String names[]={"Overview","My Treatment","Profile","Coming Up","","","Settings","Logout"};
+            Integer[] img={R.drawable.overview,R.drawable.treatment,R.drawable.profile,R.drawable.comingupwhite,0,0,R.drawable.settting,R.drawable.logout};
             customListDrawer = new CustomListDrawer(Main2Activity.this,names,img,"#ABD14B");
 
             TextView prof_name = (TextView)findViewById(R.id.name);
@@ -130,7 +126,7 @@ public class Main2Activity extends AppCompatActivity {
             }
 
 
-            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dayOfWeek);
+          //  arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dayOfWeek);
             drawerList.setAdapter(customListDrawer);
 
             drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -138,31 +134,52 @@ public class Main2Activity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
+                    TextView selected_item = (TextView) view.findViewById(R.id.selected_item);
+                    ImageView icon = (ImageView) view.findViewById(R.id.icon);
+
                     if (position==0)
                     {
-                        startActivity(new Intent(Main2Activity.this,DrashBoardActivity.class));
+                        selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                        icon.setBackgroundResource(R.drawable.overview);
+                        startActivity(new Intent(Main2Activity.this,Main2Activity.class));
+
 
                     } else if (position==1)
                     {
+                        selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                        icon.setBackgroundResource(R.drawable.calendarblue);
                         startActivity(new Intent(Main2Activity.this,DrawerActivity.class));
+
 
                     } else if (position==2)
                     {
+                        icon.setBackgroundResource(R.drawable.userblue);
+                        selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
                         startActivity(new Intent(Main2Activity.this,ProfileActivity.class));
+
 
                     }
                     else if (position==3)
                     {
+                        selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                        icon.setBackgroundResource(R.drawable.comingupblue);
                         startActivity(new Intent(Main2Activity.this,CominUpWithListview.class));
+
                     }
 
-                    else if (position==4)
+                    else if (position==6)
                     {
+                        selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                        icon.setBackgroundResource(R.drawable.settingsblue);
                         startActivity(new Intent(Main2Activity.this,SettingActivity.class));
 
-                    } else if (position==5)
+
+                    } else if (position==7)
                     {
+                        selected_item.setBackgroundColor(Color.parseColor("#ABD14B"));
+                        icon.setBackgroundResource(R.drawable.logoff);
                         startActivity(new Intent(Main2Activity.this,Splash.class));
+
                     }
                 }});
         }
@@ -202,7 +219,8 @@ public class Main2Activity extends AppCompatActivity {
                 }
 
               // textPrompt2.setText(state);
-            }};
+            }
+        };
 
     public class AsyncHttpTask6 extends AsyncTask<String, Void, Integer>
     {

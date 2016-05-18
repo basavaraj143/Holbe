@@ -43,15 +43,15 @@ public class CustomListDrawer extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.dummy, null, true);
+        View listViewItem = inflater.inflate(R.layout.drawer_item, null, true);
         ImageView icon = (ImageView) listViewItem.findViewById(R.id.icon);
         TextView type = (TextView) listViewItem.findViewById(R.id.type);
-        ImageView image = (ImageView) listViewItem.findViewById(R.id.imageView);
         icon.setBackgroundResource(imageid[position]);
         type.setText(names[position]);
-
         return  listViewItem;
     }
+
 }

@@ -484,7 +484,7 @@ public class ExpandListAdapterForComingUpListview extends BaseExpandableListAdap
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) context
                     .getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inf.inflate(R.layout.dummy, null);
+            convertView = inf.inflate(R.layout.overview_group_item_dummy, null);
         }
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
         mExpandableListView.expandGroup(groupPosition);

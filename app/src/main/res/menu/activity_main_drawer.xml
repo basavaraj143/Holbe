@@ -17,7 +17,8 @@
 
         <item
             android:id="@+id/comingup"
-            android:title="Coming Up" />
+            android:title="Coming Up"
+            android:icon="@drawable/comingupwhite"/>
 
     </group>
 

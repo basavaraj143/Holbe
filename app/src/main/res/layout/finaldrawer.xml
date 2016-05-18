@@ -897,7 +897,7 @@
 
     <LinearLayout
         android:id="@+id/drawer"
-        android:layout_width="250dp"
+        android:layout_width="270dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/bg"
@@ -907,7 +907,7 @@
             android:id="@+id/prof_pic"
             android:layout_width="90dp"
             android:scaleType="fitXY"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="16dp"
             android:background="@drawable/ladyimage"
             android:layout_height="90dp"/>
