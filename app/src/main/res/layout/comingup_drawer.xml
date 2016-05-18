@@ -17,7 +17,7 @@
             android:layout_height="fill_parent"
             android:weightSum="100"
             android:fitsSystemWindows="true"
-            android:background="@drawable/comingupbackground"
+            android:background="@drawable/bg"
             android:orientation="vertical">
 
             <LinearLayout
@@ -139,6 +139,7 @@
             android:id="@+id/city"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
+            android:text="Bangalore"
             android:textColor="#fff"
             android:layout_marginBottom="30dp"
             android:layout_height="wrap_content"
@@ -148,7 +149,7 @@
             android:id="@+id/drawerlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#535b68" />
+            android:background="#80000000" />
 
     </LinearLayout>
 

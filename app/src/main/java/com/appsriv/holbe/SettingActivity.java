@@ -669,6 +669,7 @@ public class SettingActivity extends AppCompatActivity
             {
                 JSONObject object = new JSONObject(result);
                 filePathFromApi= object.getString("file_path");
+                Login.details.put("user_profile_picture",filePathFromApi);
                 // Log.i("Holbe","FILE_PATH "+filePathFromApi);
             } catch (JSONException e) {
                 e.printStackTrace();
