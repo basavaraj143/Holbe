@@ -17,7 +17,7 @@
             android:layout_height="fill_parent"
             android:weightSum="100"
             android:fitsSystemWindows="true"
-            android:background="@drawable/bg"
+            android:background="@drawable/comingupbackground"
             android:orientation="vertical">
 
             <LinearLayout

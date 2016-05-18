@@ -96,6 +96,7 @@
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
+                                android:scaleType="fitXY"
                                 android:layout_weight="65"
                                 android:id="@+id/prof_picture"
                                 android:layout_margin="10dp"/>
