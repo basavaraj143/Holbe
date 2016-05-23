@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:background="@drawable/profilebg"
-                    android:layout_weight="35"
+                    android:layout_weight="38"
                     android:weightSum="100"
                     android:orientation="vertical">
 
@@ -94,17 +94,15 @@
                             android:orientation="vertical"
                             android:weightSum="100">
                             <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:scaleType="fitXY"
-                                android:layout_weight="65"
                                 android:id="@+id/prof_picture"
                                 android:layout_margin="10dp"/>
                             <ImageView
                                 android:layout_width="60dp"
-                                android:layout_height="0dp"
+                                android:layout_height="20dp"
                                 android:layout_marginRight="30dp"
-                                android:layout_weight="15"
                                 android:id="@+id/active"
                                 android:layout_gravity="start"
                                 android:layout_marginLeft="10dp"
@@ -135,6 +133,7 @@
                                     android:textColor="#fff"
                                     android:textSize="25sp"
                                     android:id="@+id/prof_name"
+                                    android:layout_marginBottom="10dp"
                                     android:text="Samanth George"
                                     android:gravity="top"/>
 
@@ -143,6 +142,7 @@
                                     android:layout_height="0dp"
                                     android:layout_weight="40"
                                     android:text="78%"
+                                    android:layout_marginTop="-10dp"
                                     android:textColor="#fff"
                                     android:textSize="40sp"
                                     android:gravity="center"/>
@@ -150,6 +150,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="0dp"
                                     android:layout_weight="25"
+                                    android:layout_marginBottom="-5dp"
                                     android:text="Your Compliance"
                                     android:layout_gravity="top"
                                     android:textColor="#fff"
@@ -170,7 +171,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="65"
+                    android:layout_weight="62"
                     android:weightSum="100"
                     android:background="#ccc"
                     android:orientation="vertical">

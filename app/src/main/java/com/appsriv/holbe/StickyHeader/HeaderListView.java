@@ -31,6 +31,7 @@ public class HeaderListView extends RelativeLayout {
     private View             mHeaderConvertView;
     private FrameLayout      mScrollView;
     private AbsListView.OnScrollListener mExternalOnScrollListener;
+    HeaderListView headerListView;
 
     public HeaderListView(Context context)
     {
@@ -298,6 +299,10 @@ public class HeaderListView extends RelativeLayout {
         }
     }
 
+    public  HeaderListView getHeaderListview()
+    {
+        return headerListView;
+    }
     public ListView getListView() {
         return mListView;
     }

@@ -59,9 +59,9 @@ import java.util.Date;
 import java.util.Locale;
 
 public class SettingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+{
     EditText fname,lname,phone,email,dob,address;
-
     ImageView prof_pic;
     Tracker mTracker;
     private int year;
@@ -541,7 +541,6 @@ public class SettingActivity extends AppCompatActivity
         protected void onPreExecute()
         {
             dialog = ProgressDialog.show(SettingActivity.this,"","Uploading...");
-
             super.onPreExecute();
         }
 
@@ -824,8 +823,8 @@ public class SettingActivity extends AppCompatActivity
 
                 e.printStackTrace();
             }
-            catch (IOException e) {
-
+            catch (IOException e)
+            {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -838,9 +837,12 @@ public class SettingActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String s)
+        {
             super.onPostExecute(s);
             Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(SettingActivity.this,DrawerActivity.class));
+
         }
     }
 

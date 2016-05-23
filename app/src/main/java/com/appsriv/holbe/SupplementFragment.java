@@ -143,6 +143,10 @@ public class SupplementFragment extends Fragment
 			//mProgressDialog.dismiss();
 
             /* Download complete. Lets update UI */
+			if (progressDialog!=null&&progressDialog.isShowing())
+			{
+				progressDialog.dismiss();
+			}
 			if (result == 1)
 			{
 				//Log.e(TAG, "fetch data!");
@@ -175,6 +179,7 @@ public class SupplementFragment extends Fragment
 						return false;
 					}
 				});*/
+
 
 
 
@@ -427,11 +432,11 @@ public class SupplementFragment extends Fragment
 							TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
 							if (section==0)
 							{
-								compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
+								compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
 							}
 							else if (section==1)
 							{
-								compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
+								compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
 							}
 							else if (section==2)
 							{
@@ -458,11 +463,11 @@ public class SupplementFragment extends Fragment
 							TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
 							if (section==0)
 							{
-								compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
+								compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
 							}
 							else if (section==1)
 							{
-								compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
+								compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
 							}
 							else if (section==2)
 							{
@@ -537,9 +542,7 @@ public class SupplementFragment extends Fragment
 				//getActivity().setContentView(list);
 				//startActivity(new Intent(getActivity(), DemoActivity.class));
 
-				if (progressDialog!=null&&progressDialog.isShowing()) {
-					progressDialog.dismiss();
-				}
+
 
 				// Toast.makeText(getApplicationContext(), "your search results", Toast.LENGTH_LONG).show();
 			}
@@ -607,7 +610,8 @@ public class SupplementFragment extends Fragment
 
 							Workout work;
 							JSONArray workout = object.getJSONArray("workout");
-							for (int x = 0; x < workout.length(); x++) {
+							for (int x = 0; x < workout.length(); x++)
+							{
 								work = new Workout();
 								work.setWorkout_mapping_id(workout.getJSONObject(x).getString("workout_mapping_id"));
 								work.setReps(workout.getJSONObject(x).getString("reps"));
@@ -626,7 +630,8 @@ public class SupplementFragment extends Fragment
 							Supplement supp = null;
 							sup_list = new ArrayList<>();
 							JSONArray supplement = object.getJSONArray("supplement");
-							for (int x = 0; x < supplement.length(); x++) {
+							for (int x = 0; x < supplement.length(); x++)
+							{
 								supp = new Supplement();
 								supp.setSupplement_mapping_id(supplement.getJSONObject(x).getString("supplement_mapping_id"));
 								supp.setSupplement_name(supplement.getJSONObject(x).getString("supplement_name"));
@@ -645,7 +650,8 @@ public class SupplementFragment extends Fragment
 							Food food1 = null;
 							food_list = new ArrayList<>();
 							JSONArray food = object.getJSONArray("food");
-							for (int x = 0; x < food.length(); x++) {
+							for (int x = 0; x < food.length(); x++)
+							{
 								food1 = new Food();
 								food1.setFood_mapping_id(food.getJSONObject(x).getString("food_mapping_id"));
 								food1.setFood_name(food.getJSONObject(x).getString("food_name"));
@@ -701,13 +707,13 @@ public class SupplementFragment extends Fragment
 							gru.setSupplement_compliance(supplement_compliance.getJSONObject(0).getInt("supplement_compliance"));
 
 							JSONArray lifestyle_compliance = object.getJSONArray("lifestyle_compliance");
-							gru.setWorkout_compliance(lifestyle_compliance.getJSONObject(0).getInt("lifestyle_compliance"));
+							gru.setLifestyle_compliance(lifestyle_compliance.getJSONObject(0).getInt("lifestyle_compliance"));
 
 							JSONArray food_compliance = object.getJSONArray("food_compliance");
-							gru.setWorkout_compliance(food_compliance.getJSONObject(0).getInt("food_compliance"));
+							gru.setFood_compliance(food_compliance.getJSONObject(0).getInt("food_compliance"));
 
 							JSONArray others_compliance = object.getJSONArray("others_compliance");
-							gru.setWorkout_compliance(others_compliance.getJSONObject(0).getInt("others_compliance"));
+							gru.setOthers_compliance(others_compliance.getJSONObject(0).getInt("others_compliance"));
 						}
 
 					gru.setItems(work_list);
