@@ -1,5 +1,7 @@
 package com.appsriv.holbe;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,7 +32,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SupplementFragment extends Fragment
 {
@@ -49,21 +55,106 @@ public class SupplementFragment extends Fragment
 	ArrayList<Others> other_list = null;
 
 	HeaderListView headerListView;
+
 	private ViewPager viewPager;
 	int str_overalll_compliance;
 	String workout_count, supplement_count, lifestyle_count, food_count, others_count;
-
+	View view;
+	SectionAdapter  sectionAdapter;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 
-		View view = inflater.inflate(R.layout.treatment_with_section, container, false);
+		view = inflater.inflate(R.layout.treatment_with_section, container, false);
 		//ExpandList = (ExpandableListView)view.findViewById(R.id.exp_list);
 		headerListView = (HeaderListView)view.findViewWithTag("header_list");
 		headerListView.setId(0);
+
+
+		DrawerActivity.date.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				final DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+						new DatePickerDialog.OnDateSetListener()
+						{
+
+							@Override
+							public void onDateSet(DatePicker view1, int year, int monthOfYear, int dayOfMonth)
+							{
+
+								SimpleDateFormat sdf = new SimpleDateFormat("EE");
+								Date d = new Date(year, monthOfYear, dayOfMonth-1);
+								String dayOfTheWeek = sdf.format(d);
+								headerListView = (HeaderListView)view.findViewWithTag("header_list");
+								headerListView.setId(0);
+								DrawerActivity.date.setText(dayOfTheWeek +" "+year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+								//String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard_new.php?id="+Login.details.get("userId")+"&dateid="+DrawerActivity.date.getText().toString().substring(4);
+								String URL = "http://192.185.26.69/~holbe/api/patient/get_dashboard_new.php?id="+Login.details.get("userId")+"&dateid="+DrawerActivity.date.getText().toString().substring(4);
+								Log.i("url" ,"url " + URL);
+								new AsyncHttpTask().execute(URL);
+								sectionAdapter.notifyDataSetChanged();
+								//sectionAdapter.notifyDataSetInvalidated();
+							}
+						}, DrawerActivity.year, DrawerActivity.month, DrawerActivity.day);
+
+
+				dpd.show();
+
+
+
+
+
+			}
+		});
+		DrawerActivity.previousdate.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				DrawerActivity.c.add(Calendar.DATE, -1);
+				DrawerActivity.formattedDate = DrawerActivity.df.format(DrawerActivity.c.getTime());
+				headerListView = (HeaderListView)view.findViewWithTag("header_list");
+				headerListView.setId(0);
+				Log.v("PREVIOUS DATE : ", DrawerActivity.formattedDate);
+				DrawerActivity.date.setText(DrawerActivity.formattedDate);
+				String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard_new.php?id="+Login.details.get("userId")+"&dateid="+DrawerActivity.date.getText().toString().substring(4);
+				Log.i("url" ,"PREVIOUS url " + url);
+				new AsyncHttpTask().execute(url);
+				sectionAdapter.notifyDataSetChanged();
+			}
+		});
+
+
+		//nextdate onlick
+		DrawerActivity.nextdate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				DrawerActivity.c.add(Calendar.DATE, 1);
+				DrawerActivity.formattedDate = DrawerActivity.df.format(DrawerActivity.c.getTime());
+				headerListView = (HeaderListView)view.findViewWithTag("header_list");
+				headerListView.setId(0);
+				Log.v("NEXT DATE : ", DrawerActivity.formattedDate);
+				DrawerActivity.date.setText(DrawerActivity.formattedDate);
+				String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard_new.php?id="+Login.details.get("userId")+"&dateid="+DrawerActivity.date.getText().toString().substring(4);
+				//http://192.185.26.69/~holbe/api/patient/get_dashboard_new.php?id=1&dateid=2016-05-24
+				Log.i("url" ,"nextdate url " + url);
+				new AsyncHttpTask().execute(url);
+				sectionAdapter.notifyDataSetChanged();
+			}
+		});
+
+
 		overalll_compliance =(TextView)view.findViewById(R.id.overalll_compliance);
-		String url = "http://192.185.26.69/~holbe/api/patient/get_treatment.php?id=1";
+		//String url = "http://192.185.26.69/~holbe/api/patient/get_treatment.php?id="+Login.details.get("userId");
+		String url = "http://192.185.26.69/~holbe/api/patient/get_dashboard_new.php?id="+Login.details.get("userId")+"&dateid="+DrawerActivity.date.getText().toString().substring(4);
+		//Log.i("url", "url " +url);
+
 		new AsyncHttpTask().execute(url);
+		Log.i("url" ,"first url " + url);
 		return view;
 	}
 
@@ -182,14 +273,16 @@ public class SupplementFragment extends Fragment
 
 
 
+				/*headerListView = (HeaderListView)view.findViewWithTag("header_list");
+				headerListView.setId(0);
 
-				headerListView.setAdapter(new SectionAdapter()
+				headerListView.getListView().deferNotifyDataSetChanged();*/
+				sectionAdapter=new SectionAdapter()
 				{
-
 					@Override
 					public int numberOfSections()
 					{
-						return 5;
+						return list.size();
 					}
 
 					@Override
@@ -263,7 +356,16 @@ public class SupplementFragment extends Fragment
 						ArrayList<Others> chList = SupplementFragment.list.get(groupPosition).getOther_Items();
 						return chList.get(childPosition);
 					}
-					public Object getGroup(int groupPosition) {
+					public Object getGroup(int groupPosition)
+					{
+						/*if (groupPosition<5)
+						{
+
+						}
+						else
+						{
+							return SupplementFragment.list.get(4);
+						}*/
 						return SupplementFragment.list.get(groupPosition);
 					}
 
@@ -271,6 +373,7 @@ public class SupplementFragment extends Fragment
 					@Override
 					public View getRowView(int section, int row, View convertView, ViewGroup parent)
 					{
+
 						Workout workout=null;
 						Supplement supplement=null;
 						LifeStyle style=null;
@@ -361,7 +464,8 @@ public class SupplementFragment extends Fragment
 							//circle_progress_bar_front.setProgress(food.getInt_compliance());
 							circle_progress_bar_front.setProgress(SupplementFragment.list.get(3).getFood_Items().get(row).getInt_compliance());
 						}
-						if (section==4) {
+						if (section==4)
+						{
 							colour.setBackgroundColor(Color.parseColor(others.getColour()));
 							exc_name.setText(others.getOthers_name());
 							rep.setText(others.getDuration());
@@ -406,100 +510,124 @@ public class SupplementFragment extends Fragment
 					@Override
 					public View getSectionHeaderView(int section, View convertView, ViewGroup parent)
 					{
-						Group group = (Group) getGroup(section);
-						if (convertView == null)
-						{
-							if (getSectionHeaderItemViewType(section) == 0)
+						/*if (section<5)
+						{*/
+
+							Group group = (Group) getGroup(section);
+							if (convertView == null)
 							{
 								LayoutInflater inf = (LayoutInflater) getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
 								convertView = inf.inflate(R.layout.group_item, null);
+
+								/*
+								if (getSectionHeaderItemViewType(section) == 0) {
+									LayoutInflater inf = (LayoutInflater) getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+									convertView = inf.inflate(R.layout.group_item, null);
+								} else {
+									LayoutInflater inf = (LayoutInflater) getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+									convertView = inf.inflate(R.layout.group_item, null);
+								}*/
+							}
+							ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
+							icon.setBackgroundResource(group.getIcon());
+							TextView type = (TextView) convertView.findViewById(R.id.type);
+							type.setText(group.getName());
+							//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+							type.setTextColor(Color.parseColor(lineColour[section]));
+							TextView compliance_percentage = (TextView) convertView.findViewById(R.id.compliance_percentage);
+							if (section == 0)
+							{
+								compliance_percentage.setText("" + group.getSupplement_compliance() + "%");
+							} else if (section == 1) {
+								compliance_percentage.setText("" + group.getWorkout_compliance() + "%");
+							} else if (section == 2) {
+								compliance_percentage.setText("" + group.getLifestyle_compliance() + "%");
+							} else if (section == 3) {
+								compliance_percentage.setText("" + group.getFood_compliance() + "%");
+							} else if (section == 4) {
+								compliance_percentage.setText("" + group.getOthers_compliance() + "%");
+							}
+
+						/*	if (getSectionHeaderItemViewType(section) == 0)
+							{
+
+								ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
+								icon.setBackgroundResource(group.getIcon());
+								TextView type = (TextView) convertView.findViewById(R.id.type);
+								type.setText(group.getName());
+								//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+								type.setTextColor(Color.parseColor(lineColour[section]));
+								TextView compliance_percentage = (TextView) convertView.findViewById(R.id.compliance_percentage);
+								if (section == 0) {
+									compliance_percentage.setText("" + group.getSupplement_compliance() + "%");
+								} else if (section == 1) {
+									compliance_percentage.setText("" + group.getWorkout_compliance() + "%");
+								} else if (section == 2) {
+									compliance_percentage.setText("" + group.getLifestyle_compliance() + "%");
+								} else if (section == 3) {
+									compliance_percentage.setText("" + group.getFood_compliance() + "%");
+								} else if (section == 4) {
+									compliance_percentage.setText("" + group.getOthers_compliance() + "%");
+								}
+
 							} else
 							{
-								LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
-								convertView = inf.inflate(R.layout.group_item, null);
-							}
-						}
+								ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
+								icon.setBackgroundResource(group.getIcon());
+								TextView type = (TextView) convertView.findViewById(R.id.type);
+								type.setText(group.getName());
+								//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
+								type.setTextColor(Color.parseColor(lineColour[section]));
+								TextView compliance_percentage = (TextView) convertView.findViewById(R.id.compliance_percentage);
+								if (section == 0) {
+									compliance_percentage.setText("" + group.getSupplement_compliance() + "%");
+								} else if (section == 1) {
+									compliance_percentage.setText("" + group.getWorkout_compliance() + "%");
+								} else if (section == 2) {
+									compliance_percentage.setText("" + group.getWorkout_compliance() + "%");
+								} else if (section == 3) {
+									compliance_percentage.setText("" + group.getFood_compliance() + "%");
+								} else if (section == 4) {
+									compliance_percentage.setText("" + group.getOthers_compliance() + "%");
+								}
 
-						if (getSectionHeaderItemViewType(section) == 0)
-						{
 
-							ImageView icon = (ImageView)convertView.findViewById(R.id.icon);
-							icon.setBackgroundResource(group.getIcon());
-							TextView type = (TextView)convertView.findViewById(R.id.type);
-							type.setText(group.getName());
-							//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
-							type.setTextColor(Color.parseColor(lineColour[section]));
-							TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
-							if (section==0)
-							{
-								compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
-							}
-							else if (section==1)
-							{
-								compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
-							}
-							else if (section==2)
-							{
-								compliance_percentage.setText(""+group.getLifestyle_compliance()+"%");
-							}
-							else if (section==3)
-							{
-								compliance_percentage.setText(""+group.getFood_compliance()+"%");
-							}
-							else if (section==4)
-							{
-								compliance_percentage.setText(""+group.getOthers_compliance()+"%");
-							}
+								switch (section) {
+									case 0:
+										compliance_percentage.setText("" + group.getSupplement_compliance() + "%");
+										break;
+									case 1:
+										compliance_percentage.setText("" + group.getWorkout_compliance() + "%");
+										break;
+									case 2:
+										compliance_percentage.setText("" + group.getWorkout_compliance() + "%");
+										break;
+									case 3:
+										convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+										break;
+									case 4:
+										convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
 
-						}
-						else
-						{
-							ImageView icon = (ImageView)convertView.findViewById(R.id.icon);
-							icon.setBackgroundResource(group.getIcon());
-							TextView type = (TextView)convertView.findViewById(R.id.type);
-							type.setText(group.getName());
-							//type.setTextColor(Color.parseColor(SupplementFragment.list.get(section).getItems().get(section).getColour()));
-							type.setTextColor(Color.parseColor(lineColour[section]));
-							TextView compliance_percentage = (TextView)convertView.findViewById(R.id.compliance_percentage);
-							if (section==0)
-							{
-								compliance_percentage.setText(""+group.getSupplement_compliance()+"%");
-							}
-							else if (section==1)
-							{
-								compliance_percentage.setText(""+group.getWorkout_compliance()+"%");
-							}
-							else if (section==2)
-							{
-								compliance_percentage.setText(""+group.getLifestyle_compliance()+"%");
-							}
-							else if (section==3)
-							{
-								compliance_percentage.setText(""+group.getFood_compliance()+"%");
-							}
-							else if (section==4)
-							{
-								compliance_percentage.setText(""+group.getOthers_compliance()+"%");
-							}
-						}
+								}
+							}*/
 
-						switch (section)
-						{
-							case 0:
-								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
-								break;
-							case 1:
-								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
-								break;
-							case 2:
-								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
-								break;
-							case 3:
-								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
-								break;
-							case 4:
-								convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+							switch (section) {
+								case 0:
+									convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+									break;
+								case 1:
+									convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+									break;
+								case 2:
+									convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+									break;
+								case 3:
+									convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
+									break;
+								case 4:
+									convertView.setBackgroundColor(Color.parseColor("#eef2f6"));
 
+							/*}*/
 						}
 						return convertView;
 					}
@@ -513,32 +641,13 @@ public class SupplementFragment extends Fragment
 						intent.putExtra("groupPosition",section);
 						intent.putExtra("childPosition",row);
 						startActivity(intent);
-						//getSectionHeaderItem(4);
-						/*if (section==0)
-						{
-							headerListView.getListView().setSelection(0);
-						}
-						else if (section==1)
-						{
-							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1));
-						}
-						else if (section==2)
-						{
-							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1)+numberOfRows(2));
-						}
-						else if (section==3)
-						{
-							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1)+numberOfRows(2)+numberOfRows(3));
-						}
-						else if(section==4)
-						{
-							headerListView.getListView().setSelection(numberOfRows(0)+numberOfRows(1)+numberOfRows(2)+numberOfRows(3)+numberOfRows(4));
-						}
-
-						Toast.makeText(getActivity(),"button clicked ",Toast.LENGTH_SHORT).show();
-*/
 					}
-				});
+				};
+				//sectionAdapter.notifyDataSetChanged();
+				headerListView.setAdapter(sectionAdapter);
+				sectionAdapter.notifyDataSetChanged();
+
+
 				//getActivity().setContentView(list);
 				//startActivity(new Intent(getActivity(), DemoActivity.class));
 
@@ -576,6 +685,13 @@ public class SupplementFragment extends Fragment
 			if (object.length()!=0)
 			{
 
+				list = new ArrayList<>();
+				work_list = new ArrayList<>();
+				life_list = new ArrayList<>();
+				sup_list = new ArrayList<>();
+				food_list = new ArrayList<>();
+				other_list = new ArrayList<>();
+
 				for (int j = 0; j <5; j++)
 				{
 					Group gru = new Group();
@@ -586,9 +702,9 @@ public class SupplementFragment extends Fragment
 
 					work_list = new ArrayList<Workout>();
 
-						for (int i = 0; i < 1; i++)
+					/*	for (int i = 0; i < 1; i++)
 						{
-
+*/
 
 							//treatment count
 							JSONArray array = object.getJSONArray("treatment_count");
@@ -714,7 +830,7 @@ public class SupplementFragment extends Fragment
 
 							JSONArray others_compliance = object.getJSONArray("others_compliance");
 							gru.setOthers_compliance(others_compliance.getJSONObject(0).getInt("others_compliance"));
-						}
+						/*}*/
 
 					gru.setItems(work_list);
 					gru.setFood_Items(food_list);
@@ -722,7 +838,10 @@ public class SupplementFragment extends Fragment
 					gru.setSup_Items(sup_list);
 					gru.setOther_Items(other_list);
 					list.add(gru);
+
+
 				}
+
 
 			}
 			else

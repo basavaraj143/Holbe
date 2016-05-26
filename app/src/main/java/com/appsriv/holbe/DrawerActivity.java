@@ -35,7 +35,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class DrawerActivity extends AppCompatActivity
@@ -53,6 +57,15 @@ public class DrawerActivity extends AppCompatActivity
     private ViewPager viewPager;
     public static TextView top,top1,top2,top3,top4;
     Tracker mTracker;
+    public static String formattedDate;
+    public static SimpleDateFormat df;
+    public static TextView date;
+    public static int year;
+    public static int month;
+    public static int day;
+    public static ImageView previousdate;
+    public static ImageView nextdate;
+    public static Calendar c;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,7 +82,80 @@ public class DrawerActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        c = Calendar.getInstance();
 
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+
+        date = (TextView)toolbar.findViewById(R.id.date);
+        previousdate = (ImageView)toolbar.findViewById(R.id.previousdate);
+        nextdate = (ImageView)toolbar.findViewById(R.id.nextdate);
+
+
+        df = new SimpleDateFormat("EE-yyyy-MM-dd");
+
+        formattedDate = df.format(c.getTime());
+
+        String ct = DateFormat.getDateInstance().format(new Date());
+        date.setText(formattedDate);
+
+
+        //date picker when we click on date
+       /* date.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                DatePickerDialog dpd = new DatePickerDialog(DrawerActivity.this,
+                        new DatePickerDialog.OnDateSetListener()
+                        {
+
+                            @Override
+                            public void onDateSet(DatePicker view,int year, int monthOfYear, int dayOfMonth)
+                            {
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("EE");
+                                Date d = new Date(year, monthOfYear, dayOfMonth-1);
+                                String dayOfTheWeek = sdf.format(d);
+                                date.setText(dayOfTheWeek +" "+year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+
+                            }
+                        }, year, month, day);
+                dpd.show();
+            }
+        });
+*/
+      /*  //Previous date onclick
+        previousdate.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                c.add(Calendar.DATE, -1);
+                formattedDate = df.format(c.getTime());
+
+                Log.v("PREVIOUS DATE : ", formattedDate);
+                date.setText(formattedDate);
+            }
+        });
+
+
+        //nextdate onlick
+        nextdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                c.add(Calendar.DATE, 1);
+                formattedDate = df.format(c.getTime());
+
+                Log.v("NEXT DATE : ", formattedDate);
+                date.setText(formattedDate);
+            }
+        });
+
+*/
       /*  String str[] ={"Basu","Basavaraj","BasavaraKing"};
         ListView listView =(ListView)drawer.findViewById(R.id.list);
         listView.setAdapter(new ArrayAdapter<String>(DrawerActivity.this,android.R.layout.simple_dropdown_item_1line,str));

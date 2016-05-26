@@ -294,7 +294,8 @@ public class ExpandListAdapterForItems extends BaseExpandableListAdapter impleme
 
 
         Group group = (Group) getGroup(groupPosition);
-        if (convertView == null) {
+        if (convertView == null)
+        {
             LayoutInflater inf = (LayoutInflater) context
                     .getSystemService(context.LAYOUT_INFLATER_SERVICE);
             convertView = inf.inflate(R.layout.group_item, null);

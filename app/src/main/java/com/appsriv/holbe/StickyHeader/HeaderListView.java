@@ -163,9 +163,12 @@ public class HeaderListView extends RelativeLayout {
                 boolean needNoHeaderUpToHeader = currIsLast && currHasHeader && !nextHasHeader && realFirstVisibleItem == firstVisibleItem && Math.abs(mListView.getChildAt(0).getTop()) >= mListView.getChildAt(0).getHeight() / 2;
                 
                 noHeaderUpToHeader = false;
-                if (currIsHeader && !prevHasHeader && firstVisibleItem >= 0) {
+                if (currIsHeader && !prevHasHeader && firstVisibleItem >= 0)
+                {
                     resetHeader(direction < 0 ? actualSection - 1 : actualSection);
-                } else if ((currIsHeader && firstVisibleItem > 0) || needScrolling) {
+                }
+                else if ((currIsHeader && firstVisibleItem > 0) || needScrolling)
+                {
                     if (!prevHasRows) {
                         resetHeader(actualSection-1);
                     }
@@ -220,8 +223,8 @@ public class HeaderListView extends RelativeLayout {
             lastResetSection = section;
         }
 
-        private void setMeasurements(int realFirstVisibleItem, int firstVisibleItem) {
-
+        private void setMeasurements(int realFirstVisibleItem, int firstVisibleItem)
+        {
             if (direction > 0) {
                 nextH = realFirstVisibleItem >= firstVisibleItem ? mListView.getChildAt(realFirstVisibleItem - firstVisibleItem).getMeasuredHeight() : 0;
             }
@@ -240,7 +243,8 @@ public class HeaderListView extends RelativeLayout {
             doneMeasuring = previous != null && prevH > 0 && nextH > 0;
         }
 
-        private void updateScrollBar() {
+        private void updateScrollBar()
+        {
             if (mHeader != null && mListView != null && mScrollView != null) {
                 int offset = mListView.computeVerticalScrollOffset();
                 int range = mListView.computeVerticalScrollRange();
@@ -287,7 +291,8 @@ public class HeaderListView extends RelativeLayout {
         }
 
         private int getRealFirstVisibleItem(int firstVisibleItem, int visibleItemCount) {
-            if (visibleItemCount == 0) {
+            if (visibleItemCount == 0)
+            {
                 return -1;
             }
             int relativeIndex = 0, totalHeight = mListView.getChildAt(0).getTop();
@@ -299,10 +304,6 @@ public class HeaderListView extends RelativeLayout {
         }
     }
 
-    public  HeaderListView getHeaderListview()
-    {
-        return headerListView;
-    }
     public ListView getListView() {
         return mListView;
     }

@@ -3,8 +3,10 @@ package com.appsriv.holbe;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -32,6 +34,16 @@ public class Login extends Activity implements OnTaskCompleted {
     Config config;
     String emailId,pwd;
     public static HashMap<String,String> details = new HashMap<>();
+
+    private static final String PREFS_NAME = "preferences";
+    private static final String PREF_UNAME = "Username";
+    private static final String PREF_PASSWORD = "Password";
+
+    private final String DefaultUnameValue = "";
+    private String UnameValue;
+
+    private final String DefaultPasswordValue = "";
+    private String PasswordValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +81,45 @@ public class Login extends Activity implements OnTaskCompleted {
               }
             }
         });
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        savePreferences();
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadPreferences();
+    }
+    private void savePreferences() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+
+        // Edit and commit
+        UnameValue = email.getText().toString();
+        PasswordValue = password.getText().toString();
+        System.out.println("onPause save name: " + UnameValue);
+        System.out.println("onPause save password: " + PasswordValue);
+        editor.putString(PREF_UNAME, UnameValue);
+        editor.putString(PREF_PASSWORD, PasswordValue);
+        editor.commit();
+    }
+
+    private void loadPreferences() {
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+                Context.MODE_PRIVATE);
+
+        // Get value
+        UnameValue = settings.getString(PREF_UNAME, DefaultUnameValue);
+        PasswordValue = settings.getString(PREF_PASSWORD, DefaultPasswordValue);
+        email.setText(UnameValue);
+        password.setText(PasswordValue);
+        System.out.println("onResume load name: " + UnameValue);
+        System.out.println("onResume load password: " + PasswordValue);
     }
     public void forgot(View v)
     {

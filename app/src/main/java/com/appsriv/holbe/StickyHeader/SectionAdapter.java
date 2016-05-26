@@ -22,17 +22,18 @@ public abstract class SectionAdapter extends BaseAdapter implements OnItemClickL
         return false;
     }
 
-    public View scrollTo(int section) {
+    public View scrollTo(int section)
+    {
         return null;
     }
 
     public View getSectionHeaderView(int section, View convertView, ViewGroup parent)
     {
-        return null;
+        return convertView;
     }
 
     public Object getSectionHeaderItem(int section) {
-        return null;
+        return section;
     }
 
     public int getRowViewTypeCount() {
@@ -87,9 +88,6 @@ public abstract class SectionAdapter extends BaseAdapter implements OnItemClickL
     public boolean isEmpty() {
         return getCount() == 0;
     }
-
-
-
 
 
     @Override
